@@ -23,3 +23,6 @@ Route::get('menu', function () {
 Route::get('login', function () {
     return view('client.login');
 })->name('login');
+Route::get('dasboard', function () {
+    return view('admin.dasboard');
+})->name('dasboard');
