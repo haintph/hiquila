@@ -37,8 +37,8 @@
                     <div class="col-lg-4 col-md-4 col-sm-6 col-12 ">
                         <div class="single_product">
                             <div class="product_thumb">
-                                    <a class="primary_img" href="product-details.html"><img src="assets/img/product/productbig1.jpg" alt=""></a>
-                                    <a class="secondary_img" href="product-details.html"><img src="assets/img/product/productbig2.jpg" alt=""></a>
+                                    <a class="primary_img" href="product-details.html"><img src="/client/assets/img/product/productbig1.jpg" alt=""></a>
+                                    <a class="secondary_img" href="product-details.html"><img src="/client/assets/img/product/productbig2.jpg" alt=""></a>
                                     <div class="label_product">
                                         <span class="label_sale">Sale</span>
                                         <span class="label_new">New</span>
@@ -84,8 +84,8 @@
                     <div class="col-lg-4 col-md-4 col-sm-6 col-12 ">
                         <div class="single_product">
                             <div class="product_thumb">
-                                    <a class="primary_img" href="product-details.html"><img src="assets/img/product/productbig3.jpg" alt=""></a>
-                                    <a class="secondary_img" href="product-details.html"><img src="assets/img/product/productbig4.jpg" alt=""></a>
+                                    <a class="primary_img" href="product-details.html"><img src="/client/assets/img/product/productbig3.jpg" alt=""></a>
+                                    <a class="secondary_img" href="product-details.html"><img src="/client/assets/img/product/productbig4.jpg" alt=""></a>
                                     <div class="label_product">
                                         <span class="label_sale">Sale</span>
                                     </div>
@@ -130,8 +130,8 @@
                     <div class="col-lg-4 col-md-4 col-sm-6 col-12 ">
                         <div class="single_product">
                             <div class="product_thumb">
-                                    <a class="primary_img" href="product-details.html"><img src="assets/img/product/productbig5.jpg" alt=""></a>
-                                    <a class="secondary_img" href="product-details.html"><img src="assets/img/product/productbig6.jpg" alt=""></a>
+                                    <a class="primary_img" href="product-details.html"><img src="/client/assets/img/product/productbig5.jpg" alt=""></a>
+                                    <a class="secondary_img" href="product-details.html"><img src="/client/assets/img/product/productbig6.jpg" alt=""></a>
                                     <div class="label_product">
                                         <span class="label_sale">Sale</span>
                                     </div>
@@ -176,8 +176,8 @@
                     <div class="col-lg-4 col-md-4 col-sm-6 col-12 ">
                         <div class="single_product">
                             <div class="product_thumb">
-                                    <a class="primary_img" href="product-details.html"><img src="assets/img/product/productbig7.jpg" alt=""></a>
-                                    <a class="secondary_img" href="product-details.html"><img src="assets/img/product/productbig8.jpg" alt=""></a>
+                                    <a class="primary_img" href="product-details.html"><img src="/client/assets/img/product/productbig7.jpg" alt=""></a>
+                                    <a class="secondary_img" href="product-details.html"><img src="/client/assets/img/product/productbig8.jpg" alt=""></a>
                                     <div class="label_product">
                                         <span class="label_sale">Sale</span>
                                     </div>
