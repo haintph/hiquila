@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,3 +27,9 @@ Route::get('login', function () {
 Route::get('dasboard', function () {
     return view('admin.dasboard');
 })->name('dasboard');
+//Categories
+Route::get('category-list', [CategoryController::class, 'list'])->name('category-list');
+Route::get('category-create', [CategoryController::class, 'create'])->name('category-create');
+Route::post('category_store', [CategoryController::class, 'store'])->name('category_store');
+Route::delete('/destroy/{id}', [CategoryController::class, 'destroy'])->name('destroy');
+
