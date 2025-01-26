@@ -20,14 +20,27 @@ Route::get('/', function () {
 Route::get('menu', function () {
     return view('client.menu');
 })->name('menu');
-
+//login
 Route::get('login', function () {
     return view('client.login');
 })->name('login');
+//cart
+Route::get('cart', function () {
+    return view('client.cart');
+})->name('cart');
+//404
+Route::fallback(function () {
+    abort(404); 
+});
+//blog
+Route::get('blog', function () {
+    return view('client.blog');
+})->name('blog');
+//admin
 Route::get('dasboard', function () {
     return view('admin.dasboard');
 })->name('dasboard');
-//Categories
+//Categories admin
 Route::get('category-list', [CategoryController::class, 'list'])->name('category-list');
 Route::get('category-create', [CategoryController::class, 'create'])->name('category-create');
 Route::post('category_store', [CategoryController::class, 'store'])->name('category_store');

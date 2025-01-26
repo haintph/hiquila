@@ -143,7 +143,7 @@
                                     </div>
                                     <div class="mini_cart_footer">
                                         <div class="cart_button">
-                                            <a href="cart.html"><i class="fa fa-shopping-cart"></i> View
+                                            <a href="{{route('cart')}}"><i class="fa fa-shopping-cart"></i> View
                                                 cart</a>
                                         </div>
                                         <div class="cart_button">
@@ -264,7 +264,7 @@
                                         </ul>
                                     </div>
                                 </li>
-                                <li><a href="blog.html">blog<i class="fa fa-angle-down"></i></a>
+                                <li><a href="{{route('blog')}}">blog<i class="fa fa-angle-down"></i></a>
                                     <ul class="sub_menu pages">
                                         <li><a href="blog-details.html">blog details</a></li>
                                         <li><a href="blog-fullwidth.html">blog fullwidth</a></li>
