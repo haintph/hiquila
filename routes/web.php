@@ -28,9 +28,13 @@ Route::get('login', function () {
 Route::get('cart', function () {
     return view('client.cart');
 })->name('cart');
+//checkout
+Route::get('checkout', function () {
+    return view('client.checkout');
+})->name('checkout');
 //404
 Route::fallback(function () {
-    abort(404); 
+    abort(404);
 });
 //blog
 Route::get('blog', function () {
@@ -45,4 +49,3 @@ Route::get('category-list', [CategoryController::class, 'list'])->name('category
 Route::get('category-create', [CategoryController::class, 'create'])->name('category-create');
 Route::post('category_store', [CategoryController::class, 'store'])->name('category_store');
 Route::delete('/destroy/{id}', [CategoryController::class, 'destroy'])->name('destroy');
-

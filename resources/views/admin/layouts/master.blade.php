@@ -553,7 +553,7 @@
                          <img src="/admin/assets/images/logo-dark.png" class="logo-lg" alt="logo dark">
                     </a>
 
-                    <a href="index.html" class="logo-light">
+                    <a href="dasboard" class="logo-light">
                          <img src="/admin/assets/images/logo-sm.png" class="logo-sm" alt="logo sm">
                          <img src="/admin/assets/images/logo-light.png" class="logo-lg" alt="logo light">
                     </a>
