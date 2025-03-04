@@ -24,26 +24,24 @@
                 <!--login area start-->
                 <div class="col-lg-6 col-md-6">
                     <div class="account_form">
-                        <h2>login</h2>
-                        <form action="#">
+                        <h2>Đăng nhập</h2>
+                        <form action="{{ route('auth.login') }}" method="POST">
+                            @csrf
                             <p>
-                                <label>Username or email <span>*</span></label>
-                                <input type="text">
+                                <label>Email <span>*</span></label>
+                                <input type="email" name="email">
                             </p>
                             <p>
-                                <label>Passwords <span>*</span></label>
-                                <input type="password">
+                                <label>Password <span>*</span></label>
+                                <input type="password" name="password">
                             </p>
                             <div class="login_submit">
-                                <a href="#">Lost your password?</a>
                                 <label for="remember">
-                                    <input id="remember" type="checkbox">
+                                    <input id="remember" type="checkbox" name="remember">
                                     Remember me
                                 </label>
-                                <button type="submit">login</button>
-
+                                <button type="submit">Login</button>
                             </div>
-
                         </form>
                     </div>
                 </div>
@@ -52,15 +50,34 @@
                 <!--register area start-->
                 <div class="col-lg-6 col-md-6">
                     <div class="account_form register">
-                        <h2>Register</h2>
-                        <form action="#">
+                        <h2>Đăng ký</h2>
+                        @if (session('success_register'))
+                            <div class="alert alert-success">{{ session('success_register') }}</div>
+                        @endif
+
+                        @if ($errors->any() && !isset($errors->login_error))
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+
+                        <form action="{{ route('auth.register') }}" method="POST">
+                            @csrf
                             <p>
-                                <label>Email address <span>*</span></label>
-                                <input type="text">
+                                <label>Name <span>*</span></label>
+                                <input type="text" name="name">
                             </p>
                             <p>
-                                <label>Passwords <span>*</span></label>
-                                <input type="password">
+                                <label>Email <span>*</span></label>
+                                <input type="email" name="email">
+                            </p>
+                            <p>
+                                <label>Password <span>*</span></label>
+                                <input type="password" name="password">
                             </p>
                             <div class="login_submit">
                                 <button type="submit">Register</button>

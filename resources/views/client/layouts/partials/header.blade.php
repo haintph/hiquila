@@ -79,10 +79,26 @@
                         <div class="header_account_area">
                             <div class="header_account_list register">
                                 <ul>
-                                    <li><a href="{{ route('login') }}">Register</a></li>
-                                    <li><span>/</span></li>
-                                    <li><a href="{{ route('login') }}">Login</a></li>
+                                    @auth
+                                        <li><a href="{{ route('profile') }}">{{ Auth::user()->name }}</a></li>
+                                        <li><span>/</span></li>
+                                        <li>
+                                            <a href="{{ route('logout') }}"
+                                                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                                Logout
+                                            </a>
+                                        </li>
+                                        <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                            style="display: none;">
+                                            @csrf
+                                        </form>
+                                    @else
+                                        <li><a href="{{ route('auth') }}">Register</a></li>
+                                        <li><span>/</span></li>
+                                        <li><a href="{{ route('auth') }}">Login</a></li>
+                                    @endauth
                                 </ul>
+
                             </div>
                             <div class="header_account_list header_wishlist">
                                 <a href="wishlist.html"><span class="lnr lnr-heart"></span> <span
@@ -143,7 +159,7 @@
                                     </div>
                                     <div class="mini_cart_footer">
                                         <div class="cart_button">
-                                            <a href="{{route('cart')}}"><i class="fa fa-shopping-cart"></i> View
+                                            <a href="{{ route('cart') }}"><i class="fa fa-shopping-cart"></i> View
                                                 cart</a>
                                         </div>
                                         <div class="cart_button">
@@ -202,21 +218,21 @@
                         <div class="categories_menu_toggle">
                             <ul>
                                 @foreach ($categories as $item)
-                                    <li class="menu_item_children"><a href="#">{{$item->name}}<i
+                                    <li class="menu_item_children"><a href="#">{{ $item->name }}<i
                                                 class="fa fa-angle-right"></i></a>
                                         <ul class="categories_mega_menu">
                                             @foreach ($item->subCategories as $subCategory)
-                                            <li class="menu_item_children"><a href="#">{{$subCategory->name_sub}}</a>
-                                                <ul class="categorie_sub_menu">
-                                                    <li><a href="#">Sweater</a></li>
-                                                    <li><a href="#">Evening</a></li>
-                                                    <li><a href="#">Day</a></li>
-                                                    <li><a href="#">Sports</a></li>
-                                                </ul>
-                                            </li>
-
+                                                <li class="menu_item_children"><a
+                                                        href="#">{{ $subCategory->name_sub }}</a>
+                                                    <ul class="categorie_sub_menu">
+                                                        <li><a href="#">Sweater</a></li>
+                                                        <li><a href="#">Evening</a></li>
+                                                        <li><a href="#">Day</a></li>
+                                                        <li><a href="#">Sports</a></li>
+                                                    </ul>
+                                                </li>
                                             @endforeach
-                                            
+
                                         </ul>
                                     </li>
                                 @endforeach
@@ -264,7 +280,7 @@
                                         </ul>
                                     </div>
                                 </li>
-                                <li><a href="{{route('blog')}}">blog<i class="fa fa-angle-down"></i></a>
+                                <li><a href="{{ route('blog') }}">blog<i class="fa fa-angle-down"></i></a>
                                     <ul class="sub_menu pages">
                                         <li><a href="blog-details.html">blog details</a></li>
                                         <li><a href="blog-fullwidth.html">blog fullwidth</a></li>

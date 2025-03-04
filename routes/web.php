@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\CategoryController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AdminController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,9 +23,20 @@ Route::get('menu', function () {
     return view('client.menu');
 })->name('menu');
 //login
-Route::get('login', function () {
-    return view('client.login');
-})->name('login');
+Route::get('auth', function () {
+    return view('client.auth.auth');
+})->name('auth');
+
+Route::post('register', [AuthController::class, 'register'])->name('auth.register');
+Route::post('login', [AuthController::class, 'login'])->name('auth.login');
+Route::post('logout', [AuthController::class, 'logout'])->name('auth.logout')->middleware('auth');
+
+// Route trang cá nhân
+Route::get('/profile', [UserController::class, 'profile'])->name('profile')->middleware('auth');
+
+// Route đăng xuất
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
 //cart
 Route::get('cart', function () {
     return view('client.cart');
@@ -40,12 +53,13 @@ Route::fallback(function () {
 Route::get('blog', function () {
     return view('client.blog');
 })->name('blog');
+
 //admin
-Route::get('dasboard', function () {
-    return view('admin.dasboard');
-})->name('dasboard');
-//Categories admin
-Route::get('category-list', [CategoryController::class, 'list'])->name('category-list');
-Route::get('category-create', [CategoryController::class, 'create'])->name('category-create');
-Route::post('category_store', [CategoryController::class, 'store'])->name('category_store');
-Route::delete('/destroy/{id}', [CategoryController::class, 'destroy'])->name('destroy');
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('dashboard', [AdminController::class, 'index'])->name('dashboard');
+    //Category
+    Route::get('category-list', [CategoryController::class, 'list'])->name('category-list');
+    Route::get('category-create', [CategoryController::class, 'create'])->name('category-create');
+    Route::post('category_store', [CategoryController::class, 'store'])->name('category_store');
+    Route::delete('/destroy/{id}', [CategoryController::class, 'destroy'])->name('destroy');
+});
