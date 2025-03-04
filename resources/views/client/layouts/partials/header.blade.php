@@ -83,7 +83,7 @@
                                         <li><a href="{{ route('profile') }}">{{ Auth::user()->name }}</a></li>
                                         <li><span>/</span></li>
                                         <li>
-                                            <a href="{{ route('logout') }}"
+                                            <a style="color: red;" href="{{ route('logout') }}"
                                                 onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                                 Logout
                                             </a>
