@@ -13,11 +13,16 @@ use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
+    public function showRegisterForm()
+    {
+        return view('client.auth.register');
+    }
     /**
      * Xử lý đăng ký
      */
     public function register(Request $request)
     {
+        // Kiểm tra và xác thực dữ liệu
         $request->validate([
             'register_name' => 'required|string|max:255',
             'register_email' => 'required|string|email|max:255|unique:users,email',
@@ -31,22 +36,30 @@ class AuthController extends Controller
             'register_password.min' => 'Mật khẩu phải có ít nhất 6 ký tự.',
         ]);
 
-        // Tạo user mới
-        $user = User::create([
-            'name' => $request->register_name,
-            'email' => $request->register_email,
-            'password' => Hash::make($request->register_password),
-        ]);
+        // Tạo tài khoản người dùng mới
+        try {
+            $user = User::create([
+                'name' => $request->register_name,
+                'email' => $request->register_email,
+                'password' => Hash::make($request->register_password),
+            ]);
 
-        // Gán mặc định role_id = 6 (Customer)
-        $user->roles()->attach(6);
+            // Gán vai trò người dùng mặc định
+            $user->roles()->attach(6);
 
-        return redirect()->route('auth')->with('success_register', 'Đăng ký thành công! Hãy đăng nhập.');
+            return redirect()->route('auth')->with('success_register', 'Đăng ký thành công! Hãy đăng nhập.');
+        } catch (\Exception $e) {
+            return back()->with('register_failed', 'Có lỗi xảy ra, vui lòng thử lại.')->withInput();
+        }
     }
 
     /**
      * Xử lý đăng nhập
      */
+    public function showLoginForm()
+    {
+        return view('client.auth.login');
+    }
     public function login(Request $request)
     {
         // Validate form inputs
@@ -59,32 +72,36 @@ class AuthController extends Controller
             'login_password.required' => 'Vui lòng nhập mật khẩu.',
             'login_password.min' => 'Mật khẩu phải có ít nhất 6 ký tự.',
         ]);
-    
-        // Attempt login
-        if (Auth::attempt(['email' => $request->login_email, 'password' => $request->login_password], $request->remember)) {
-            $user = Auth::user();
-    
-            // Kiểm tra quyền trong bảng role_user
-            $role = DB::table('role_user')->where('user_id', $user->id)->pluck('role_id')->first();
-    
-            // Redirect based on role
-            if ($role == 1) {
-                return redirect()->route('dashboard')->with('success_login', 'Đăng nhập thành công (Admin)!');
-            } elseif ($role == 6) {
-                return redirect()->route('auth')->with('success_login', 'Đăng nhập thành công (Client)!');
-            } elseif ($role == 4) {
-                return redirect()->route('waiter')->with('success_login', 'Đăng nhập thành công (Waiter)!');
-            }
-    
-            // If the user does not have a valid role
-            Auth::logout();
-            return redirect()->route('auth')->withErrors(['login_error' => 'Tài khoản của bạn chưa có quyền truy cập.']);
+
+        // Lấy user từ email
+        $user = User::where('email', $request->login_email)->first();
+
+        // Kiểm tra xem email có tồn tại không
+        if (!$user) {
+            return back()->withErrors(['login_email' => 'Email không tồn tại.'])->withInput();
         }
-    
-        // If authentication fails
-        return back()->withErrors(['login_error' => 'Email hoặc mật khẩu không đúng.'])->withInput();
+
+        // Kiểm tra mật khẩu
+        if (!Auth::attempt(['email' => $request->login_email, 'password' => $request->login_password], $request->remember)) {
+            return back()->withErrors(['login_password' => 'Mật khẩu không đúng.'])->withInput();
+        }
+
+        // Lấy quyền của user
+        $role = DB::table('role_user')->where('user_id', $user->id)->pluck('role_id')->first();
+
+        // Điều hướng dựa vào quyền
+        switch ($role) {
+            case 1:
+                return redirect()->route('dashboard')->with('success_login', 'Đăng nhập thành công (Admin)!');
+            case 6:
+                return redirect()->route('auth')->with('success_login', 'Đăng nhập thành công (Client)!');
+            case 4:
+                return redirect()->route('waiter')->with('success_login', 'Đăng nhập thành công (Waiter)!');
+            default:
+                Auth::logout();
+                return redirect()->route('auth')->withErrors(['login_error' => 'Tài khoản của bạn chưa có quyền truy cập.']);
+        }
     }
-    
 
     /**
      * Đăng xuất

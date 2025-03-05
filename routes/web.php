@@ -2,8 +2,8 @@
 
 use App\Http\Controllers\CategoryController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 
 /*
@@ -23,13 +23,15 @@ Route::get('/', function () {
 Route::get('menu', function () {
     return view('client.menu');
 })->name('menu');
-//login
-Route::get('auth', function () {
-    return view('client.auth.auth');
-})->name('auth');
 
-Route::post('register', [AuthController::class, 'register'])->name('auth.register');
+// Route cho đăng nhập
+Route::get('auth', [AuthController::class, 'showLoginForm'])->name('auth');
 Route::post('login', [AuthController::class, 'login'])->name('auth.login');
+
+// Route cho đăng ký
+Route::get('register', [AuthController::class, 'showRegisterForm'])->name('auth.register');
+Route::post('register', [AuthController::class, 'register'])->name('auth.register.submit');
+
 Route::post('logout', [AuthController::class, 'logout'])->name('auth.logout')->middleware('auth');
 
 // Route trang cá nhân
