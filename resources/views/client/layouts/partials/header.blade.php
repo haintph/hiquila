@@ -92,9 +92,7 @@
                                             @csrf
                                         </form> --}}
                                     @else
-                                        <li><a href="{{ route('auth') }}">Register</a></li>
-                                        <li><span>/</span></li>
-                                        <li><a href="{{ route('auth') }}">Login</a></li>
+                                        <li><a href="{{ route('auth') }}">Sign in</a></li>
                                     @endauth
                                 </ul>
 
