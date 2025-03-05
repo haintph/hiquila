@@ -49,6 +49,7 @@ class AuthController extends Controller
      */
     public function login(Request $request)
     {
+        // Validate form inputs
         $request->validate([
             'login_email' => 'required|string|email',
             'login_password' => 'required|string|min:6',
@@ -58,26 +59,32 @@ class AuthController extends Controller
             'login_password.required' => 'Vui lòng nhập mật khẩu.',
             'login_password.min' => 'Mật khẩu phải có ít nhất 6 ký tự.',
         ]);
-
+    
+        // Attempt login
         if (Auth::attempt(['email' => $request->login_email, 'password' => $request->login_password], $request->remember)) {
             $user = Auth::user();
-
+    
             // Kiểm tra quyền trong bảng role_user
             $role = DB::table('role_user')->where('user_id', $user->id)->pluck('role_id')->first();
-
+    
+            // Redirect based on role
             if ($role == 1) {
                 return redirect()->route('dashboard')->with('success_login', 'Đăng nhập thành công (Admin)!');
             } elseif ($role == 6) {
                 return redirect()->route('auth')->with('success_login', 'Đăng nhập thành công (Client)!');
+            } elseif ($role == 4) {
+                return redirect()->route('waiter')->with('success_login', 'Đăng nhập thành công (Waiter)!');
             }
-
-            // Nếu user không có quyền phù hợp
+    
+            // If the user does not have a valid role
             Auth::logout();
             return redirect()->route('auth')->withErrors(['login_error' => 'Tài khoản của bạn chưa có quyền truy cập.']);
         }
-
+    
+        // If authentication fails
         return back()->withErrors(['login_error' => 'Email hoặc mật khẩu không đúng.'])->withInput();
     }
+    
 
     /**
      * Đăng xuất

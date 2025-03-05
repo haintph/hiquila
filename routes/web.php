@@ -55,12 +55,17 @@ Route::get('blog', function () {
     return view('client.blog');
 })->name('blog');
 
-//admin
-Route::middleware(['auth', 'admin'])->group(function () {
+// Admin routes (chỉ admin mới có thể truy cập)
+Route::middleware(['auth', 'role:1'])->group(function () { // Role '1' là admin
     Route::get('dashboard', [AdminController::class, 'index'])->name('dashboard');
-    //Category
+    // Category management
     Route::get('category-list', [CategoryController::class, 'list'])->name('category-list');
     Route::get('category-create', [CategoryController::class, 'create'])->name('category-create');
     Route::post('category_store', [CategoryController::class, 'store'])->name('category_store');
     Route::delete('/destroy/{id}', [CategoryController::class, 'destroy'])->name('destroy');
 });
+
+// Waiter role (chỉ nhân viên mới có thể truy cập)
+Route::middleware(['auth', 'role:4'])->get('waiter', function () {
+    return view('client.roles.waiter');
+})->name('waiter');
