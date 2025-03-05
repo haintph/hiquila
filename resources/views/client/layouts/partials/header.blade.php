@@ -80,10 +80,9 @@
                             <div class="header_account_list register">
                                 <ul>
                                     @auth
-                                        <li><a href="{{ route('profile') }}">{{ Auth::user()->name }}</a></li>
-                                        <li><span>/</span></li>
-                                        <li>
-                                            <a style="color: red;" href="{{ route('logout') }}"
+                                        <li><a style="font-weight: 600;" href="{{ route('profile') }}">{{ Auth::user()->name }}</a></li>
+                                        {{-- <li>
+                                            <a style="color: red;font-weight:" href="{{ route('logout') }}"
                                                 onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                                 Logout
                                             </a>
@@ -91,7 +90,7 @@
                                         <form id="logout-form" action="{{ route('logout') }}" method="POST"
                                             style="display: none;">
                                             @csrf
-                                        </form>
+                                        </form> --}}
                                     @else
                                         <li><a href="{{ route('auth') }}">Register</a></li>
                                         <li><span>/</span></li>
