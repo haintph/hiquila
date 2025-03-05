@@ -68,7 +68,7 @@
                                     <button type="submit">Register</button>
                                 </div>
                                 <p class="text-center mt-3">
-                                    Bạn đã có tài khoản? <a href="{{ route('auth.login') }}">Đăng nhập</a>
+                                    Bạn đã có tài khoản? <a href="{{ route('auth') }}">Đăng nhập</a>
                                 </p>
                             </form>
                         </div>

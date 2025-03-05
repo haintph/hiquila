@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Http\Controllers\Auth\ResetPasswordController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,6 +34,13 @@ Route::post('login', [AuthController::class, 'login'])->name('auth.login');
 Route::get('register', [AuthController::class, 'showRegisterForm'])->name('auth.register');
 Route::post('register', [AuthController::class, 'register'])->name('auth.register.submit');
 
+//Lấy lại password
+Route::get('password/reset', [ForgotPasswordController::class, 'showLinkRequestForm'])->name('password.request');
+Route::post('password/email', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
+Route::get('password/reset/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
+Route::post('password/reset', [ResetPasswordController::class, 'reset'])->name('password.update');
+
+//Đăng xuất
 Route::post('logout', [AuthController::class, 'logout'])->name('auth.logout')->middleware('auth');
 
 // Route trang cá nhân
