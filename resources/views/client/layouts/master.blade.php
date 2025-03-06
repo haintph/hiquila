@@ -36,7 +36,9 @@
     </div>
 
     <!--brand area end-->
-
+    <div>
+        @include('client.layouts.partials.AI')
+    </div>
     <!--footer area start-->
     <footer class="footer_widgets">
         @include('client.layouts.partials.footer')
@@ -190,4 +192,5 @@
     @include('client.layouts.partials.script')
 </body>
 <!-- Mirrored from htmldemo.net/safira/safira/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Tue, 21 Jan 2025 12:08:00 GMT -->
+
 </html>

@@ -3,6 +3,7 @@
 use App\Http\Controllers\CategoryController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AIController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
@@ -80,3 +81,6 @@ Route::middleware(['auth', 'role:1'])->group(function () { // Role '1' là admin
 Route::middleware(['auth', 'role:4'])->get('waiter', function () {
     return view('client.roles.waiter');
 })->name('waiter');
+
+//AI
+Route::post('/chat-ai', [AIController::class, 'chat']);
