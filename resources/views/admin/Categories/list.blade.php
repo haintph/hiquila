@@ -114,7 +114,7 @@
                                                         <div
                                                             class="rounded bg-light avatar-md d-flex align-items-center justify-content-center">
                                                             <img src="{{ asset('storage/' . $category->img_category) }}"
-                                                                alt="" class="avatar-md">
+                                                            alt="" class="avatar-md">
                                                         </div>
                                                         <p class="text-dark fw-medium fs-15 mb-0">{{ $category->name }}
                                                         </p>
@@ -125,24 +125,32 @@
                                                 <td>{{ $category->is_active ? 'Hoạt động' : 'Không hoạt động' }}</td>
                                                 <td>
                                                     <div class="d-flex gap-2">
-                                                        <a href="{{ route('category_detail', $category->id) }}" class="btn btn-light btn-sm">
-                                                            <iconify-icon icon="solar:eye-broken" class="align-middle fs-18"></iconify-icon>
+                                                        <a href="{{ route('category_detail', $category->id) }}"
+                                                            class="btn btn-light btn-sm">
+                                                            <iconify-icon icon="solar:eye-broken"
+                                                                class="align-middle fs-18"></iconify-icon>
                                                         </a> <!-- Detail -->
-                                                        
-                                                        <a href="{{ route('category_edit', $category->id) }}" class="btn btn-soft-primary btn-sm">
-                                                            <iconify-icon icon="solar:pen-2-broken" class="align-middle fs-18"></iconify-icon>
+
+                                                        <a href="{{ route('category_edit', $category->id) }}"
+                                                            class="btn btn-soft-primary btn-sm">
+                                                            <iconify-icon icon="solar:pen-2-broken"
+                                                                class="align-middle fs-18"></iconify-icon>
                                                         </a> <!-- Edit -->
-                                                
-                                                        <form action="{{ route('destroy', $category->id) }}" method="POST" style="display: inline;">
+
+                                                        <form action="{{ route('destroy', $category->id) }}" method="POST"
+                                                            style="display: inline;">
                                                             @csrf
                                                             @method('DELETE')
-                                                            <button onclick="return confirm('Bạn có chắc chắn muốn xóa không?')" type="submit" class="btn btn-soft-danger btn-sm">
-                                                                <iconify-icon icon="solar:trash-bin-minimalistic-2-broken" class="align-middle fs-18"></iconify-icon>
+                                                            <button
+                                                                onclick="return confirm('Bạn có chắc chắn muốn xóa không?')"
+                                                                type="submit" class="btn btn-soft-danger btn-sm">
+                                                                <iconify-icon icon="solar:trash-bin-minimalistic-2-broken"
+                                                                    class="align-middle fs-18"></iconify-icon>
                                                             </button>
                                                         </form>
                                                     </div>
                                                 </td>
-                                                
+
                                             </tr>
                                         @endforeach
 
