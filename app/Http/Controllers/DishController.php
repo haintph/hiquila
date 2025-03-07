@@ -117,4 +117,10 @@ class DishController extends Controller
 
         return redirect()->route('dish_list')->with('success', 'Đã xóa món ăn thành công!');
     }
+    public function show($id)
+    {
+        $dish = Dish::with('variants')->findOrFail($id);
+        return view('admin.dishes.detail', compact('dish'));
+    }
+    
 }
