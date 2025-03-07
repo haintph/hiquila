@@ -28,35 +28,88 @@ class CategoryController extends Controller
 
     public function store(Request $request)
     {
-        $data = $request->validate([
-            'name' => ['required', 'max:100'],
-            'img_category' => ['nullable', 'image', 'max:2048'],
-            'is_active' => ['required'],
-            'description' => ['required']
+        // Validate dữ liệu đầu vào
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:100',
+            'img_category' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'is_active' => 'required|boolean',
+            'description' => 'required|string'
         ]);
 
-        $data['img_category'] = $this->uploadFile($request, 'img_category');
+        // Xử lý lưu ảnh nếu có
+        $imagePath = null;
+        if ($request->hasFile('img_category')) {
+            $imagePath = $request->file('img_category')->store('categories', 'public');
+        }
 
-        // dd($data);
-        
-        Category::query()->create($data);
+        // Lưu vào database
+        Category::create([
+            'name' => $validatedData['name'],
+            'img_category' => $imagePath,
+            'is_active' => $validatedData['is_active'],
+            'description' => $validatedData['description'],
+        ]);
 
-        return redirect()->route('category-list')->with('success', 'Thêm dữ liệu thành công');
+        return redirect()->route('category-list')->with('success', 'Thêm danh mục thành công!');
     }
+
+
+    public function edit($id)
+    {
+        $category = Category::findOrFail($id);
+        return view('admin.Categories.edit', compact('category'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        $category = Category::findOrFail($id);
+
+        // Validate dữ liệu đầu vào
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:100',
+            'img_category' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'is_active' => 'required|boolean',
+            'description' => 'required|string'
+        ]);
+
+        // Xử lý ảnh nếu có ảnh mới
+        if ($request->hasFile('img_category')) {
+            // Xóa ảnh cũ nếu có
+            if ($category->img_category) {
+                Storage::delete('public/' . $category->img_category);
+            }
+            // Lưu ảnh mới vào thư mục 'categories' trong storage
+            $validatedData['img_category'] = $request->file('img_category')->store('categories', 'public');
+        }
+
+        // Cập nhật danh mục
+        $category->update($validatedData);
+
+        return redirect()->route('category-list')->with('success', 'Cập nhật danh mục thành công!');
+    }
+
+
+    public function detail($id)
+    {
+        $category = Category::findOrFail($id);
+        return view('admin.Categories.detail', compact('category'));
+    }
+
+
     public function destroy($id)
-{
-    // Tìm và xóa bản ghi
-    $item = Category::findOrFail($id);
+    {
+        // Tìm và xóa bản ghi
+        $item = Category::findOrFail($id);
 
-    // Xóa ảnh nếu có
-    if ($item->img_category) {
-        Storage::delete($item->img_category); // Xóa ảnh từ storage
+        // Xóa ảnh nếu có
+        if ($item->img_category) {
+            Storage::delete($item->img_category); // Xóa ảnh từ storage
+        }
+
+        // Xóa bản ghi trong cơ sở dữ liệu
+        $item->delete();
+
+        // Chuyển hướng về trang danh sách và thông báo thành công
+        return redirect()->route('category-list')->with('success', 'Đã xóa thành công!');
     }
-
-    // Xóa bản ghi trong cơ sở dữ liệu
-    $item->delete();
-
-    // Chuyển hướng về trang danh sách và thông báo thành công
-    return redirect()->route('category-list')->with('success', 'Đã xóa thành công!');
-}
 }
