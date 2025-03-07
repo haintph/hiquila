@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Dish;
 use App\Models\Category;
+use App\Models\DishImage;
 use App\Models\SubCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class DishController extends Controller
 {
@@ -23,6 +25,8 @@ class DishController extends Controller
         return view('admin.dishes.create', compact('categories', 'subCategories'));
     }
 
+
+
     public function store(Request $request)
     {
         $validatedData = $request->validate([
@@ -32,22 +36,36 @@ class DishController extends Controller
             'stock' => 'required|integer|min:0',
             'is_available' => 'required|boolean',
             'description' => 'required|string',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'thumbnail' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // Ảnh đại diện
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',  // Ảnh album
         ]);
 
-        // Xử lý lưu ảnh
-        $imagePath = $request->file('image')->store('dishes', 'public');
-
-        // Lưu vào database
-        Dish::create([
+        // Tạo món ăn mới
+        $dish = Dish::create([
             'name' => $validatedData['name'],
             'sub_category_id' => $validatedData['sub_category_id'],
             'price' => $validatedData['price'],
             'stock' => $validatedData['stock'],
             'is_available' => $validatedData['is_available'],
             'description' => $validatedData['description'],
-            'image' => $imagePath,
         ]);
+
+        // Xử lý ảnh đại diện
+        if ($request->hasFile('thumbnail')) {
+            $thumbnailPath = $request->file('thumbnail')->store('dishes/thumbnails', 'public');
+            $dish->update(['image' => $thumbnailPath]);
+        }
+
+        // Xử lý ảnh album
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $image) {
+                $path = $image->store('dishes/albums', 'public');
+                DishImage::create([
+                    'dish_id' => $dish->id,
+                    'image_path' => $path,
+                ]);
+            }
+        }
 
         return redirect()->route('dish_list')->with('success', 'Thêm món ăn thành công!');
     }
@@ -57,13 +75,15 @@ class DishController extends Controller
         $dish = Dish::findOrFail($id);
         $categories = Category::where('is_active', 1)->get();
         $subCategories = SubCategory::where('is_active', 1)->get();
-        return view('admin.dishes.edit', compact('dish', 'categories', 'subCategories'));
+
+        // Lấy danh sách ảnh từ bảng dish_images
+        $albumImages = DishImage::where('dish_id', $dish->id)->get();
+
+        return view('admin.dishes.edit', compact('dish', 'categories', 'subCategories', 'albumImages'));
     }
 
     public function update(Request $request, $id)
     {
-        $dish = Dish::findOrFail($id);
-
         $validatedData = $request->validate([
             'name' => 'required|string|max:100',
             'sub_category_id' => 'required|exists:sub_categories,id',
@@ -71,33 +91,46 @@ class DishController extends Controller
             'stock' => 'required|integer|min:0',
             'is_available' => 'required|boolean',
             'description' => 'required|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // Ảnh đại diện
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048' // Ảnh album
         ]);
 
-        // Xử lý ảnh nếu có
+        // Tìm món ăn cần cập nhật
+        $dish = Dish::findOrFail($id);
+        $dish->update($validatedData);
+
+        // ✅ Cập nhật ảnh đại diện
         if ($request->hasFile('image')) {
             // Xóa ảnh cũ nếu có
             if ($dish->image) {
                 Storage::disk('public')->delete($dish->image);
             }
+
             // Lưu ảnh mới
-            $imagePath = $request->file('image')->store('dishes', 'public');
-            $dish->image = $imagePath;
+            $path = $request->file('image')->store('dishes', 'public');
+            $dish->update(['image' => $path]);
         }
 
-        // Cập nhật dữ liệu vào database
-        $dish->update([
-            'name' => $validatedData['name'],
-            'sub_category_id' => $validatedData['sub_category_id'],
-            'price' => $validatedData['price'],
-            'stock' => $validatedData['stock'],
-            'is_available' => $validatedData['is_available'],
-            'description' => $validatedData['description'],
-        ]);
+        // ✅ Xử lý cập nhật album ảnh (tối đa 3 ảnh)
+        $currentImageCount = $dish->images()->count();
 
-        return redirect()->route('dish_list')->with('success', 'Cập nhật món ăn thành công!');
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $image) {
+                if ($currentImageCount < 3) {
+                    $path = $image->store('dishes', 'public');
+                    DishImage::create([
+                        'dish_id' => $dish->id,
+                        'image_path' => $path
+                    ]);
+                    $currentImageCount++;
+                } else {
+                    break; // Đạt giới hạn 3 ảnh thì dừng lại
+                }
+            }
+        }
+
+        return redirect()->route('dish_edit', $dish->id)->with('success', 'Món ăn đã được cập nhật!');
     }
-
     public function detail($id)
     {
         $dish = Dish::findOrFail($id);
@@ -122,5 +155,40 @@ class DishController extends Controller
         $dish = Dish::with('variants')->findOrFail($id);
         return view('admin.dishes.detail', compact('dish'));
     }
-    
+    //delete album ảnh
+    public function deleteImage($id)
+    {
+        $image = DishImage::findOrFail($id);
+
+        // Xóa file ảnh trong storage
+        Storage::disk('public')->delete($image->image_path);
+
+        // Xóa dữ liệu trong database
+        $image->delete();
+
+        return response()->json(['success' => true]);
+    }
+    public function updateImage(Request $request, $id)
+    {
+        $image = DishImage::findOrFail($id);
+
+        // Kiểm tra có file ảnh mới không
+        if ($request->hasFile('image')) {
+            // Xóa ảnh cũ
+            Storage::disk('public')->delete($image->image_path);
+
+            // Lưu ảnh mới
+            $newPath = $request->file('image')->store('dishes', 'public');
+
+            // Cập nhật đường dẫn ảnh trong database
+            $image->update(['image_path' => $newPath]);
+
+            return response()->json([
+                'success' => true,
+                'new_path' => asset('storage/' . $newPath)
+            ]);
+        }
+
+        return response()->json(['success' => false]);
+    }
 }

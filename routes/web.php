@@ -10,6 +10,7 @@ use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\SubCategoryController;
 use App\Http\Controllers\DishController;
+use App\Http\Controllers\DishImageController;
 use App\Http\Controllers\DishVariantController;
 
 
@@ -105,15 +106,13 @@ Route::middleware(['auth', 'role:1'])->group(function () { // Role '1' là admin
     Route::get('/variants/edit/{id}', [DishVariantController::class, 'edit'])->name('variants.edit');
     Route::get('/variants/create/{dish_id}', [DishVariantController::class, 'create'])->name('variants.create');
     Route::post('/variants/store', [DishVariantController::class, 'store'])->name('variants.store');
-
-
     // Route::get('dish_detail/{id}', [DishController::class, 'detail'])->name('dish_detail');
 
-    Route::prefix('variants')->group(function () {
-        Route::post('/store', [DishVariantController::class, 'store'])->name('variants.store');
-        Route::put('/update/{id}', [DishVariantController::class, 'update'])->name('variants.update');
-        Route::delete('/delete/{id}', [DishVariantController::class, 'destroy'])->name('variants.destroy');
-    });
+    //ablum ảnh
+    Route::post('/dish/image/update/{id}', [DishController::class, 'updateImage'])->name('dish_image_update');
+    Route::post('/dishes/{dish}/upload-images', [DishImageController::class, 'store'])->name('dishes.upload_images');
+    Route::delete('/dish/image/delete/{id}', [DishController::class, 'deleteImage'])->name('dish_image_delete');
+
 });
 
 //Waiter role (chỉ nhân viên mới có thể truy cập)

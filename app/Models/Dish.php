@@ -36,4 +36,13 @@ class Dish extends Model
     {
         return $this->hasMany(DishVariant::class, 'dish_id');
     }
+    /**
+     * Mối quan hệ với biến thể album ảnh.
+     */
+    public function images()
+    {
+        return $this->hasMany(DishImage::class, 'dish_id');
+    }
+    
+    
 }
