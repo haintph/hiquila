@@ -26,9 +26,9 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-        // Xóa ảnh
         document.querySelectorAll(".delete-image").forEach(button => {
-            button.addEventListener("click", function() {
+            button.addEventListener("click", function(event) {
+                event.preventDefault(); // ✅ Ngăn chặn reload trang
                 let imageId = this.getAttribute("data-id");
                 let listItem = document.getElementById(`image-${imageId}`);
 
@@ -43,7 +43,8 @@
                         .then(response => response.json())
                         .then(data => {
                             if (data.success) {
-                                listItem.remove();
+                                listItem.remove(); // ✅ Xóa ảnh khỏi giao diện
+                                checkImageLimit(); // ✅ Cập nhật kiểm tra số lượng ảnh
                             } else {
                                 alert("Lỗi khi xóa ảnh!");
                             }
@@ -54,16 +55,11 @@
         });
     });
 
-    function checkImageLimit(event) {
-        let imageInput = document.getElementById("albumImagesInput");
+    function checkImageLimit() {
         let imageWarning = document.getElementById("imageLimitWarning");
-        let currentImages = document.querySelectorAll(".list-group-item").length; // Đếm số ảnh hiện có
+        let currentImages = document.querySelectorAll(".list-group-item").length - 1; // Trừ 1 vì input file
 
-        if (currentImages >= 3) {
-            event.preventDefault();
-            imageInput.value = ""; // Xóa ảnh vừa chọn
-            imageWarning.classList.remove("d-none");
-        } else {
+        if (currentImages < 3) {
             imageWarning.classList.add("d-none");
         }
     }

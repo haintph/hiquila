@@ -111,7 +111,7 @@ Route::middleware(['auth', 'role:1'])->group(function () { // Role '1' là admin
     //ablum ảnh
     Route::post('/dish/image/update/{id}', [DishController::class, 'updateImage'])->name('dish_image_update');
     Route::post('/dishes/{dish}/upload-images', [DishImageController::class, 'store'])->name('dishes.upload_images');
-    Route::delete('/dish/image/delete/{id}', [DishController::class, 'deleteImage'])->name('dish_image_delete');
+    Route::delete('/dish/image/delete/{id}', [DishController::class, 'deleteImage'])->name('dish.image.delete');
 
 });
 

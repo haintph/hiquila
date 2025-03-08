@@ -49,7 +49,22 @@
                                         <p>Không có hình ảnh</p>
                                     @endif
                                 </div>
-
+                                {{-- album --}}
+                                <div class="col-lg-12">
+                                    @if ($albumImages->isNotEmpty())
+                                        <label class="form-label">Album Ảnh</label>
+                                        <div class="d-flex flex-wrap gap-2">
+                                            <!-- Sử dụng flexbox để xếp ảnh theo hàng ngang -->
+                                            @foreach ($albumImages as $image)
+                                                <img src="{{ asset('storage/' . $image->image_path) }}" alt="Album Image"
+                                                    class="rounded border"
+                                                    style="width: 150px; height: 100px; object-fit: cover;">
+                                            @endforeach
+                                        </div>
+                                    @else
+                                        <p>Không có ảnh album</p>
+                                    @endif
+                                </div>
                                 <!-- Miêu tả -->
                                 <div class="col-lg-12">
                                     <div class="mb-0">

@@ -14,7 +14,7 @@ class DishController extends Controller
 {
     public function list()
     {
-        $dishes = Dish::with('subCategory')->latest('id')->paginate(8);
+        $dishes = Dish::with('subCategory')->latest('updated_at')->paginate(8);
         return view('admin.dishes.list', compact('dishes'));
     }
 
@@ -129,7 +129,7 @@ class DishController extends Controller
             }
         }
 
-        return redirect()->route('dish_edit', $dish->id)->with('success', 'Món ăn đã được cập nhật!');
+        return redirect()->route('dish_list', $dish->id)->with('success', 'Món ăn đã được cập nhật!');
     }
     public function detail($id)
     {
@@ -151,10 +151,15 @@ class DishController extends Controller
         return redirect()->route('dish_list')->with('success', 'Đã xóa món ăn thành công!');
     }
     public function show($id)
-    {
-        $dish = Dish::with('variants')->findOrFail($id);
-        return view('admin.dishes.detail', compact('dish'));
-    }
+{
+    $dish = Dish::with('variants')->findOrFail($id);
+
+    // Lấy danh sách ảnh từ bảng dish_images
+    $albumImages = DishImage::where('dish_id', $dish->id)->get();
+
+    return view('admin.dishes.detail', compact('dish', 'albumImages'));
+}
+
     //delete album ảnh
     public function deleteImage($id)
     {
@@ -166,8 +171,9 @@ class DishController extends Controller
         // Xóa dữ liệu trong database
         $image->delete();
 
-        return response()->json(['success' => true]);
+        return response()->json(['success' => true]);  // ✅ Đúng, trả về JSON
     }
+
     public function updateImage(Request $request, $id)
     {
         $image = DishImage::findOrFail($id);

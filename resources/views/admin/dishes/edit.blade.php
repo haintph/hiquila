@@ -44,7 +44,11 @@
                 <div class="col-xl-3 col-lg-4">
                     <h3>Edit Dish</h3>
                 </div>
-
+                @if (session('success'))
+                    <div class="alert alert-success">
+                        {{ session('success') }}
+                    </div>
+                @endif
                 <div class="col-xl-9 col-lg-8">
                     <form action="{{ route('dish_update', $dish->id) }}" method="post" enctype="multipart/form-data">
                         @csrf
