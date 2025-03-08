@@ -85,7 +85,9 @@ Route::middleware(['auth', 'role:1'])->group(function () { // Role '1' là admin
     Route::get('category_detail/{id}', [CategoryController::class, 'detail'])->name('category_detail');
 
 
-    //Quản lý danh mục con (sub_categories)
+
+    // 🌟 Quản lý danh mục con (sub_categories)
+
     Route::get('sub_category_list', [SubCategoryController::class, 'list'])->name('sub_category_list');
     Route::get('sub_category_create', [SubCategoryController::class, 'create'])->name('sub_category_create');
     Route::post('sub_category_store', [SubCategoryController::class, 'store'])->name('sub_category_store');
@@ -94,7 +96,7 @@ Route::middleware(['auth', 'role:1'])->group(function () { // Role '1' là admin
     Route::delete('sub_category_destroy/{id}', [SubCategoryController::class, 'destroy'])->name('sub_category_destroy');
     Route::get('sub_category_detail/{id}', [SubCategoryController::class, 'detail'])->name('sub_category_detail');
 
-    //Quản lý món ăn (dishes)**
+    // 🌟 Quản lý món ăn ( dishes)
     Route::get('dish_list', [DishController::class, 'list'])->name('dish_list');
     Route::get('dish_create', [DishController::class, 'create'])->name('dish_create');
     Route::post('dish_store', [DishController::class, 'store'])->name('dish_store');
@@ -115,7 +117,8 @@ Route::middleware(['auth', 'role:1'])->group(function () { // Role '1' là admin
 
 });
 
-//Waiter role (chỉ nhân viên mới có thể truy cập)
+
+// Waiter role (chỉ nhân viên mới có thể truy cập)
 Route::middleware(['auth', 'role:4'])->get('waiter', function () {
     return view('client.roles.waiter');
 })->name('waiter');

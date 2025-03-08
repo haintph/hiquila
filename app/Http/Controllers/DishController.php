@@ -129,7 +129,7 @@ class DishController extends Controller
             }
         }
 
-        return redirect()->route('dish_edit', $dish->id)->with('success', 'Món ăn đã được cập nhật!');
+        return redirect()->route('dish_list', $dish->id)->with('success', 'Món ăn đã được cập nhật!');
     }
     public function detail($id)
     {
@@ -155,6 +155,7 @@ class DishController extends Controller
         $dish = Dish::with('variants')->findOrFail($id);
         return view('admin.dishes.detail', compact('dish'));
     }
+
     //delete album ảnh
     public function deleteImage($id)
     {

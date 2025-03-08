@@ -80,7 +80,8 @@
                             <div class="header_account_list register">
                                 <ul>
                                     @auth
-                                        <li><a style="font-weight: 600;" href="{{ route('profile') }}">{{ Auth::user()->name }}</a></li>
+                                        <li><a style="font-weight: 600;"
+                                                href="{{ route('profile') }}">{{ Auth::user()->name }}</a></li>
                                         {{-- <li>
                                             <a style="color: red;font-weight:" href="{{ route('logout') }}"
                                                 onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
@@ -252,28 +253,41 @@
                                             class="fa fa-angle-down"></i></a>
                                     <div class="mega_menu">
                                         <ul class="mega_menu_inner">
-                                            <li><a href="#">Shop Layouts</a>
+                                            {{-- <li>
+                                                <a href="#">Category</a>
                                                 <ul>
-                                                    <li><a href="shop-fullwidth.html">Full Width</a></li>
-                                                    <li><a href="shop-fullwidth-list.html">Full Width list</a>
-                                                    </li>
-                                                    <li><a href="shop-right-sidebar.html">Right Sidebar </a>
-                                                    </li>
-                                                    <li><a href="shop-right-sidebar-list.html"> Right Sidebar
-                                                            list</a></li>
-                                                    <li><a href="shop-list.html">List View</a></li>
+                                                    @foreach ($categories as $category)
+                                                        <li>
+                                                            <div><a href="#">{{ $category->name }}</a></div>
+                                                        </li>
+                                                    @endforeach
                                                 </ul>
-                                            </li>
-                                            <li><a href="#">other Pages</a>
-                                                <ul>
-                                                    <li><a href="cart.html">cart</a></li>
-                                                    <li><a href="wishlist.html">Wishlist</a></li>
-                                                    <li><a href="checkout.html">Checkout</a></li>
-                                                    <li><a href="my-account.html">my account</a></li>
-                                                    <li><a href="404.html">Error 404</a></li>
-                                                </ul>
-                                            </li>
-
+                                            </li> --}}
+                                            <div style="display: flex; gap: 55px;">
+                                                @foreach ($categories->take(4) as $category)
+                                                    <div>
+                                                        <a href="#" style="text-decoration: none; font-weight: bold; transition: color 0.3s;" 
+                                                           onmouseover="this.style.color='#40a944'" 
+                                                           onmouseout="this.style.color='black'">
+                                                            {{ $category->name }}
+                                                        </a>
+                                                        <br>
+                                                        <ul>
+                                                            @foreach ($category->subCategories->take(5) as $subCategory)
+                                                                <li>
+                                                                    <div>
+                                                                        <a href="#" style="text-decoration: none; transition: color 0.3s;" 
+                                                                           onmouseover="this.style.color='#40a944'" 
+                                                                           onmouseout="this.style.color='black'">
+                                                                            {{ $subCategory->name_sub }}
+                                                                        </a>
+                                                                    </div>
+                                                                </li>
+                                                            @endforeach
+                                                        </ul>
+                                                    </div>
+                                                @endforeach
+                                            </div>                                            
                                         </ul>
                                     </div>
                                 </li>

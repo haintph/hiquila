@@ -17,4 +17,3 @@ class DishImage extends Model
         return $this->belongsTo(Dish::class);
     }
 }
-

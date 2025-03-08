@@ -13,8 +13,7 @@
                                 <!-- Tên món ăn -->
                                 <div class="col-md-6">
                                     <label class="form-label fw-bold">Tên món ăn</label>
-                                    <input type="text" name="name" class="form-control rounded-3 shadow-sm"
-                                        placeholder="Nhập tên món ăn">
+                                    <input type="text" name="name" class="form-control rounded-3 shadow-sm" placeholder="Nhập tên món ăn">
                                 </div>
 
                                 <!-- Danh mục -->
@@ -22,7 +21,7 @@
                                     <label class="form-label fw-bold">Danh mục con</label>
                                     <select class="form-control rounded-3 shadow-sm" name="sub_category_id">
                                         <option value="">-- Chọn danh mục --</option>
-                                        @foreach ($subCategories as $subCategory)
+                                        @foreach($subCategories as $subCategory)
                                             <option value="{{ $subCategory->id }}">{{ $subCategory->name_sub }}</option>
                                         @endforeach
                                     </select>
@@ -31,15 +30,13 @@
                                 <!-- Giá tiền -->
                                 <div class="col-md-6">
                                     <label class="form-label fw-bold">Giá tiền</label>
-                                    <input type="number" step="0.01" name="price"
-                                        class="form-control rounded-3 shadow-sm" placeholder="Nhập giá tiền">
+                                    <input type="number" step="0.01" name="price" class="form-control rounded-3 shadow-sm" placeholder="Nhập giá tiền">
                                 </div>
 
                                 <!-- Số lượng -->
                                 <div class="col-md-6">
                                     <label class="form-label fw-bold">Số lượng</label>
-                                    <input type="number" name="stock" class="form-control rounded-3 shadow-sm"
-                                        placeholder="Nhập số lượng">
+                                    <input type="number" name="stock" class="form-control rounded-3 shadow-sm" placeholder="Nhập số lượng">
                                 </div>
 
                                 <!-- Trạng thái -->
@@ -51,25 +48,21 @@
                                     </select>
                                 </div>
 
-                                <!-- Chọn Ảnh Đại Diện -->
+                                <!-- Ảnh đại diện -->
                                 <div class="col-md-6">
                                     <label class="form-label fw-bold">Ảnh đại diện</label>
-                                    <input type="file" name="thumbnail" class="form-control" accept="image/*"
-                                        onchange="previewThumbnail(event)">
+                                    <input type="file" name="thumbnail" class="form-control" accept="image/*" onchange="previewThumbnail(event)">
                                     <div class="mt-2" id="thumbnailPreviewContainer">
-                                        <img id="thumbnailPreview" class="rounded"
-                                            style="width: 120px; height: 120px; object-fit: cover; display: none;">
+                                        <img id="thumbnailPreview" class="rounded" style="width: 120px; height: 120px; object-fit: cover; display: none;">
                                     </div>
                                 </div>
 
-                                <!-- Chọn Album Ảnh -->
+                                <!-- Album ảnh -->
                                 <div class="col-md-6">
                                     <label class="form-label fw-bold">Album ảnh (có thể chọn nhiều ảnh)</label>
-                                    <input type="file" name="images[]" class="form-control" multiple accept="image/*"
-                                        onchange="previewImages(event)">
+                                    <input type="file" name="images[]" class="form-control" multiple accept="image/*" onchange="previewImages(event)">
                                     <div class="mt-2 d-flex flex-wrap gap-2" id="imagePreviewContainer"></div>
                                 </div>
-
 
                                 <!-- Miêu tả -->
                                 <div class="col-12">
@@ -127,6 +120,5 @@
                 }
             }
         </script>
-
     </div>
 @endsection
