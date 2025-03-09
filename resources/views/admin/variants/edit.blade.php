@@ -35,7 +35,7 @@
                     </div>
 
                     <button type="submit" class="btn btn-success">Cập nhật</button>
-                    <a href="{{ route('dish_detail', $variant->dish_id) }}" class="btn btn-secondary">Quay lại</a>
+                    <a href="{{ route('variant_list', $variant->dish_id) }}" class="btn btn-secondary">Quay lại</a>
                 </form>
                 <div class="col-xl-9 col-lg-8">
                 </div>

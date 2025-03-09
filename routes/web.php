@@ -101,11 +101,14 @@ Route::middleware(['auth', 'role:1'])->group(function () { // Role '1' là admin
     Route::get('dish_edit/{id}', [DishController::class, 'edit'])->name('dish_edit');
     Route::put('dish_update/{id}', [DishController::class, 'update'])->name('dish_update');
     Route::delete('dish_destroy/{id}', [DishController::class, 'destroy'])->name('dish_destroy');
-    //vảiant
     Route::get('/dish_detail/show/{id}', [DishController::class, 'show'])->name('dish_detail');
-    Route::get('/variants/edit/{id}', [DishVariantController::class, 'edit'])->name('variants.edit');
+    //vảiant
+    Route::get('variants', [DishVariantController::class, 'list'])->name('variant_list');
     Route::get('/variants/create/{dish_id}', [DishVariantController::class, 'create'])->name('variants.create');
+    Route::get('/variants/edit/{id}', [DishVariantController::class, 'edit'])->name('variants.edit');
+    Route::put('/variants/update/{id}', [DishVariantController::class, 'update'])->name('variants.update');
     Route::post('/variants/store', [DishVariantController::class, 'store'])->name('variants.store');
+    Route::delete('/variants/destroy/{id}', [DishVariantController::class, 'destroy'])->name('variants.destroy');
     // Route::get('dish_detail/{id}', [DishController::class, 'detail'])->name('dish_detail');
 
     //ablum ảnh

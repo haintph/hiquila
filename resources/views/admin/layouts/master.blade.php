@@ -700,19 +700,19 @@
                             <span class="nav-icon">
                                 <iconify-icon icon="solar:confetti-minimalistic-bold-duotone"></iconify-icon>
                             </span>
-                            <span class="nav-text"> Attributes </span>
+                            <span class="nav-text"> Variant Dish </span>
                         </a>
                         <div class="collapse" id="sidebarAttributes">
                             <ul class="nav sub-navbar-nav">
                                 <li class="sub-nav-item">
-                                    <a class="sub-nav-link" href="attributes-list.html">List</a>
+                                    <a class="sub-nav-link" href="{{ route('variant_list') }}">Danh sách</a>
                                 </li>
-                                <li class="sub-nav-item">
+                                {{-- <li class="sub-nav-item">
                                     <a class="sub-nav-link" href="attributes-edit.html">Edit</a>
                                 </li>
                                 <li class="sub-nav-item">
                                     <a class="sub-nav-link" href="attributes-add.html">Create</a>
-                                </li>
+                                </li> --}}
                             </ul>
                         </div>
                     </li>
@@ -1187,8 +1187,8 @@
                     </li>
 
                     <li class="nav-item">
-                        <a class="nav-link menu-arrow" href="#sidebarForms" data-bs-toggle="collapse"
-                            role="button" aria-expanded="false" aria-controls="sidebarForms">
+                        <a class="nav-link menu-arrow" href="#sidebarForms" data-bs-toggle="collapse" role="button"
+                            aria-expanded="false" aria-controls="sidebarForms">
                             <span class="nav-icon">
                                 <iconify-icon icon="solar:book-bookmark-bold-duotone"></iconify-icon>
                             </span>

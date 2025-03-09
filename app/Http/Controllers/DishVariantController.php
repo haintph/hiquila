@@ -8,6 +8,15 @@ use App\Models\DishVariant;
 
 class DishVariantController extends Controller
 {
+    public function list()
+    {
+        $dishes = Dish::with('variants')
+            ->orderByDesc('updated_at') // Sắp xếp theo updated_at của món ăn
+            ->paginate(2);
+    
+        return view('admin.variants.list', compact('dishes'));
+    }
+    
     /**
      * Thêm một biến thể mới.
      */
@@ -29,7 +38,7 @@ class DishVariantController extends Controller
 
         DishVariant::create($request->all());
 
-        return redirect()->route('dish_detail', $request->dish_id)->with('success', 'Thêm biến thể thành công!');
+        return redirect()->route('variant_list')->with('success', 'Thêm biến thể thành công!');
     }
 
 
@@ -39,20 +48,22 @@ class DishVariantController extends Controller
     public function update(Request $request, $id)
     {
         $variant = DishVariant::findOrFail($id);
-
+    
         $request->validate([
             'name' => 'required|string|max:255',
             'price' => 'required|numeric|min:0',
             'stock' => 'required|integer|min:0',
             'is_available' => 'required|boolean',
         ]);
-
+    
         $variant->update($request->all());
-
-        return redirect()->route('dish_detail', $variant->dish_id)->with('success', 'Cập nhật biến thể thành công!');
+    
+        // Cập nhật updated_at của món ăn để thay đổi vị trí trong danh sách
+        $variant->dish->touch();
+    
+        return redirect()->route('variant_list', $variant->dish_id)->with('success', 'Cập nhật biến thể thành công!');
     }
-
-
+    
     /**
      * Xóa biến thể.
      */
@@ -61,8 +72,9 @@ class DishVariantController extends Controller
         $variant = DishVariant::findOrFail($id);
         $variant->delete();
 
-        return redirect()->back()->with('success', 'Xóa biến thể thành công!');
+        return response()->json(['success' => true]);
     }
+
     public function edit($id)
     {
         $variant = DishVariant::findOrFail($id);

@@ -36,7 +36,7 @@
                     </div>
 
                     <button type="submit" class="btn btn-success">Thêm</button>
-                    <a href="{{ route('dish_detail', $dish->id) }}" class="btn btn-secondary">Quay lại</a>
+                    <a href="{{ route('variant_list' ) }}" class="btn btn-secondary">Quay lại</a>
                 </form>
 
                 <div class="col-xl-9 col-lg-8">

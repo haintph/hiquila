@@ -92,10 +92,8 @@
                                             <th>Giá</th>
                                             <th>Tồn kho</th>
                                             <th>Trạng thái</th>
-                                            <th>Hành động</th>
+                                           
                                         </tr>
-                                        <a href="{{ route('variants.create', $dish->id) }}"
-                                            class="btn btn-primary mb-3">Thêm biến thể</a>
 
                                     </thead>
                                     <tbody>
@@ -105,20 +103,6 @@
                                                 <td>{{ number_format($variant->price, 0, ',', '.') }} VND</td>
                                                 <td>{{ $variant->stock }}</td>
                                                 <td>{{ $variant->is_available ? 'Còn bán' : 'Hết hàng' }}</td>
-                                                <td>
-                                                    <!-- Nút Sửa -->
-                                                    <a href="{{ route('variants.edit', $variant->id) }}"
-                                                        class="btn btn-warning">Sửa</a>
-
-                                                    <!-- Nút Xóa -->
-                                                    <form action="{{ route('variants.destroy', $variant->id) }}"
-                                                        method="POST" style="display:inline;">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="btn btn-danger">Xóa</button>
-                                                    </form>
-                                                </td>
-
                                             </tr>
                                         @endforeach
                                     </tbody>
