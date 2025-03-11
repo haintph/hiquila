@@ -117,14 +117,14 @@ class DishController extends Controller
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $image) {
                 if ($currentImageCount < 3) {
-                    $path = $image->store('dishes', 'public');
+                    $path = $image->store('dishes/albums', 'public'); // Lưu vào thư mục dishes/albums
                     DishImage::create([
                         'dish_id' => $dish->id,
                         'image_path' => $path
                     ]);
                     $currentImageCount++;
                 } else {
-                    break; // Đạt giới hạn 3 ảnh thì dừng lại
+                    break;
                 }
             }
         }
@@ -151,14 +151,14 @@ class DishController extends Controller
         return redirect()->route('dish_list')->with('success', 'Đã xóa món ăn thành công!');
     }
     public function show($id)
-{
-    $dish = Dish::with('variants')->findOrFail($id);
+    {
+        $dish = Dish::with('variants')->findOrFail($id);
 
-    // Lấy danh sách ảnh từ bảng dish_images
-    $albumImages = DishImage::where('dish_id', $dish->id)->get();
+        // Lấy danh sách ảnh từ bảng dish_images
+        $albumImages = DishImage::where('dish_id', $dish->id)->get();
 
-    return view('admin.dishes.detail', compact('dish', 'albumImages'));
-}
+        return view('admin.dishes.detail', compact('dish', 'albumImages'));
+    }
 
     //delete album ảnh
     public function deleteImage($id)
