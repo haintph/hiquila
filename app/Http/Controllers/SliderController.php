@@ -51,6 +51,12 @@ class SliderController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
+            // Xóa ảnh cũ trước khi cập nhật ảnh mới
+            if ($slider->image && file_exists(storage_path("app/public/{$slider->image}"))) {
+                unlink(storage_path("app/public/{$slider->image}"));
+            }
+
+            // Lưu ảnh mới
             $imagePath = $request->file('image')->store('sliders', 'public');
             $slider->image = $imagePath;
         }
@@ -62,7 +68,13 @@ class SliderController extends Controller
 
     public function destroy(Slider $slider)
     {
+        // Xóa ảnh trước khi xóa slider
+        if ($slider->image && file_exists(storage_path("app/public/{$slider->image}"))) {
+            unlink(storage_path("app/public/{$slider->image}"));
+        }
+
         $slider->delete();
+
         return redirect()->route('sliders.index')->with('success', 'Xóa thành công');
     }
 }
