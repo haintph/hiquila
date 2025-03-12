@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\SliderController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AIController;
@@ -12,6 +13,7 @@ use App\Http\Controllers\SubCategoryController;
 use App\Http\Controllers\DishController;
 use App\Http\Controllers\DishImageController;
 use App\Http\Controllers\DishVariantController;
+use App\Http\Controllers\HomeController;
 
 
 /*
@@ -25,12 +27,11 @@ use App\Http\Controllers\DishVariantController;
 |
 */
 
-Route::get('/', function () {
-    return view('client.index');
-});
+Route::get('/', [HomeController::class, 'index']);
 Route::get('menu', function () {
     return view('client.menu');
 })->name('menu');
+
 
 // Route cho đăng nhập
 Route::get('auth', [AuthController::class, 'showLoginForm'])->name('auth');
@@ -116,6 +117,8 @@ Route::middleware(['auth', 'role:1'])->group(function () { // Role '1' là admin
     Route::post('/dishes/{dish}/upload-images', [DishImageController::class, 'store'])->name('dishes.upload_images');
     Route::delete('/dish/image/delete/{id}', [DishController::class, 'deleteImage'])->name('dish.image.delete');
 
+    //slider
+    Route::resource('sliders', SliderController::class);
 });
 
 //Waiter role (chỉ nhân viên mới có thể truy cập)

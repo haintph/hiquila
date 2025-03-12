@@ -78,7 +78,8 @@
                                                     @endif
                                                 </td>
 
-                                                <td>{{ $dish->created_at ? $dish->created_at->format('d/m/Y H:i:s') : 'N/A' }}</td>
+                                                <td>{{ $dish->created_at ? $dish->created_at->format('d/m/Y H:i:s') : 'N/A' }}
+                                                </td>
 
                                                 <td>
                                                     <div class="d-flex gap-2">
@@ -107,6 +108,7 @@
                                                     <ul class="list-group">
                                                         @foreach ($dish->variants as $variant)
                                                             <li class="list-group-item d-flex justify-content-between align-items-center"
+                                                                style="background-color: #e4e6ea;"
                                                                 id="variant-row-{{ $variant->id }}">
                                                                 <div class="d-flex flex-grow-1 align-items-center">
                                                                     <span class="me-3">{{ $variant->name }}</span>

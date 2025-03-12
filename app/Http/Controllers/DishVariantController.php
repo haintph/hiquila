@@ -12,7 +12,7 @@ class DishVariantController extends Controller
     {
         $dishes = Dish::with('variants')
             ->orderByDesc('updated_at') // Sắp xếp theo updated_at của món ăn
-            ->paginate(2);
+            ->paginate(8);
     
         return view('admin.variants.list', compact('dishes'));
     }
