@@ -13,27 +13,36 @@
                                 <!-- Tiêu đề -->
                                 <div class="col-md-6">
                                     <label class="form-label fw-bold">Tiêu đề</label>
-                                    <input type="text" name="title" class="form-control rounded-3 shadow-sm"
-                                        placeholder="Nhập tiêu đề" required>
+                                    <input type="text" name="title"
+                                        class="form-control rounded-3 shadow-sm @error('title') is-invalid @enderror"
+                                        placeholder="Nhập tiêu đề" value="{{ old('title') }}" >
+                                    @error('title')
+                                        <div class="text-danger mt-1">{{ $message }}</div>
+                                    @enderror
                                 </div>
 
                                 <!-- Tiêu đề phụ -->
                                 <div class="col-md-6">
                                     <label class="form-label fw-bold">Tiêu đề phụ</label>
                                     <input type="text" name="subtitle" class="form-control rounded-3 shadow-sm"
-                                        placeholder="Nhập tiêu đề phụ">
+                                        placeholder="Nhập tiêu đề phụ" value="{{ old('subtitle') }}">
                                 </div>
 
                                 <!-- Mô tả -->
                                 <div class="col-12">
                                     <label class="form-label fw-bold">Mô tả</label>
-                                    <textarea class="form-control rounded-3 shadow-sm" name="description" rows="4" placeholder="Nhập mô tả"></textarea>
+                                    <textarea class="form-control rounded-3 shadow-sm" name="description" rows="4" placeholder="Nhập mô tả">{{ old('description') }}</textarea>
                                 </div>
 
                                 <!-- Chọn ảnh -->
                                 <div class="col-md-6">
                                     <label class="form-label fw-bold">Ảnh slider</label>
-                                    <input type="file" name="image" class="form-control" accept="image/*" required onchange="previewSliderImage(event)">
+                                    <input type="file" name="image"
+                                        class="form-control @error('image') is-invalid @enderror" accept="image/*" 
+                                        onchange="previewSliderImage(event)">
+                                    @error('image')
+                                        <div class="text-danger mt-1">{{ $message }}</div>
+                                    @enderror
                                     <div class="mt-2" id="sliderImagePreviewContainer">
                                         <img id="sliderImagePreview" class="rounded shadow-sm"
                                             style="width: 250px; height: auto; display: none;">
@@ -43,8 +52,12 @@
                                 <!-- Link -->
                                 <div class="col-md-6">
                                     <label class="form-label fw-bold">Liên kết (nếu có)</label>
-                                    <input type="text" name="link" class="form-control rounded-3 shadow-sm"
-                                        placeholder="Nhập URL liên kết">
+                                    <input type="text" name="link"
+                                        class="form-control rounded-3 shadow-sm @error('link') is-invalid @enderror"
+                                        placeholder="Nhập URL liên kết" value="{{ old('link') }}">
+                                    @error('link')
+                                        <div class="text-danger mt-1">{{ $message }}</div>
+                                    @enderror
                                 </div>
 
                                 <!-- Nút bấm -->
@@ -54,6 +67,7 @@
                                 </div>
                             </div>
                         </form>
+
                     </div>
                 </div>
             </div>

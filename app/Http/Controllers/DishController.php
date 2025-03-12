@@ -12,11 +12,20 @@ use Illuminate\Support\Str;
 
 class DishController extends Controller
 {
-    public function list()
+    public function list(Request $request)
     {
-        $dishes = Dish::with('subCategory')->latest('updated_at')->paginate(8);
+        $query = Dish::with('subCategory')->latest('updated_at');
+
+        // Kiểm tra nếu có từ khóa tìm kiếm
+        if ($request->has('search') && !empty($request->search)) {
+            $query->where('name', 'like', '%' . $request->search . '%');
+        }
+
+        $dishes = $query->paginate(8);
+
         return view('admin.dishes.list', compact('dishes'));
     }
+
 
     public function create()
     {

@@ -7,10 +7,18 @@
                     <div class="card">
                         <div class="card-header d-flex justify-content-between align-items-center gap-1">
                             <h4 class="card-title flex-grow-1">All Dishes List</h4>
+
+                            <form action="{{ route('dish_list') }}" method="GET" class="d-flex gap-2">
+                                <input type="text" name="search" class="form-control form-control-sm" placeholder="Tìm kiếm món ăn..."
+                                    value="{{ request('search') }}">
+                                <button type="submit" class="btn btn-sm btn-outline-primary">Tìm kiếm</button>
+                            </form>                            
+
                             <a href="{{ route('dish_create') }}" class="btn btn-sm btn-primary">
                                 Add Dish
                             </a>
                         </div>
+
                         @if (session('success'))
                             <div class="alert alert-success">
                                 {{ session('success') }}
@@ -21,12 +29,12 @@
                                 <thead class="bg-light-subtle">
                                     <tr>
                                         <th>STT</th>
-                                        <th>Dish</th>
+                                        <th>Món ănăn</th>
                                         {{-- <th>Description</th> --}}
-                                        <th>Price</th>
-                                        <th>Stock</th>
-                                        <th>Sub Category</th>
-                                        <th>Availability</th>
+                                        <th>GiáGiá</th>
+                                        <th>Số lượng</th>
+                                        <th>Danh mục phụ</th>
+                                        <th>Khả dụng</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -38,8 +46,8 @@
                                                 <div class="d-flex align-items-center gap-2">
                                                     <div
                                                         class="rounded bg-light avatar-md d-flex align-items-center justify-content-center">
-                                                        <img src="{{ asset('storage/' . $dish->image) }}"
-                                                            alt="" class="avatar-md">
+                                                        <img src="{{ asset('storage/' . $dish->image) }}" alt=""
+                                                            class="avatar-md">
                                                     </div>
                                                     <p class="text-dark fw-medium fs-15 mb-0">{{ $dish->name }}</p>
                                                 </div>
@@ -48,7 +56,7 @@
                                             <td>{{ number_format($dish->price, 0, ',', '.') }} VND</td>
                                             <td>{{ $dish->stock }}</td>
                                             <td>{{ $dish->subCategory->name_sub ?? 'N/A' }}</td>
-                                            <td>{{ $dish->is_available ? 'Available' : 'Not Available' }}</td>
+                                            <td>{{ $dish->is_available ? 'Sẵn có' : 'Không sẵn có' }}</td>
                                             <td>
                                                 <div class="d-flex gap-2">
                                                     <a href="{{ route('dish_detail', $dish->id) }}"
