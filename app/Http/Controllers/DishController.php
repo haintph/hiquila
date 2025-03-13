@@ -76,6 +76,7 @@ class DishController extends Controller
             'stock' => $validatedData['stock'],
             'is_available' => $validatedData['is_available'],
             'description' => $validatedData['description'],
+            'is_new' => 1,
         ]);
 
         // Xử lý ảnh đại diện
