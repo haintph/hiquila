@@ -89,16 +89,18 @@
                             </ul> --}}
                             <ul class="nav" role="tablist" id="nav-tab">
                                 @foreach ($categories->take(5) as $index => $category)
-                                    <li class="nav-item">
-                                        <a class="nav-link {{ $index == 0 ? 'active' : '' }}" id="tab-{{ $category->id }}"
-                                            data-toggle="tab" href="#category{{ $category->id }}" role="tab"
-                                            aria-controls="category{{ $category->id }}"
-                                            aria-selected="{{ $index == 0 ? 'true' : 'false' }}">
+                                    <li>
+                                        <a class="{{ $index == 0 ? 'active' : '' }}" 
+                                           data-toggle="tab" 
+                                           href="#category{{ $category->id }}" 
+                                           role="tab" 
+                                           aria-controls="category{{ $category->id }}" 
+                                           aria-selected="{{ $index == 0 ? 'true' : 'false' }}">
                                             {{ $category->name }}
                                         </a>
                                     </li>
                                 @endforeach
-                            </ul>
+                            </ul>                            
                         </div>
                     </div>
                 </div>
@@ -109,77 +111,84 @@
                         <div class="tab-content">
                             <div class="tab-pane fade show active" id="plant1" role="tabpanel">
                                 <div class="product_carousel product_column5 owl-carousel">
-                                    @foreach ($dishes->filter(fn($dish) => $dish->is_new || $dish->isDiscounted()) as $dish)
-                                        <article class="single_product">
-                                            <figure>
-                                                <div class="product_thumb">
-                                                    <a class="primary_img" href="{{ route('dish.details', $dish->id) }}">
-                                                        <img src="{{ asset('storage/' . ($dish->images->first()->image_path ?? 'client/assets/img/no-image.jpg')) }}"
-                                                            alt="{{ $dish->name }}" class="rounded" width="212"
-                                                            height="212">
-                                                    </a>
-                                                    <a class="secondary_img" href="{{ route('dish.details', $dish->id) }}">
-                                                        <img src="{{ asset('storage/' . ($dish->images->skip(1)->first()->image_path ?? ($dish->images->first()->image_path ?? 'client/assets/img/no-image.jpg'))) }}"
-                                                            alt="{{ $dish->name }}" class="rounded" width="212"
-                                                            height="212">
-                                                    </a>
-                                                    <div class="label_product">
-                                                        @if ($dish->isDiscounted())
-                                                            <span class="label_sale">Sale</span>
-                                                        @endif
-                                                        @if ($dish->is_new)
-                                                            <span class="label_new">New</span>
-                                                        @endif
-                                                    </div>
-                                                    <div class="action_links">
-                                                        <ul>
-                                                            <li class="add_to_cart">
-                                                                {{-- {{ route('cart.add', $dish->id) }} --}}
-                                                                <a href="#" data-tippy="Thêm vào giỏ">
-                                                                    <span class="lnr lnr-cart"></span>
-                                                                </a>
-                                                            </li>
-                                                            <li class="quick_button">
-                                                                <a href="#" data-bs-toggle="modal"
-                                                                    data-bs-target="#modal_box_{{ $dish->id }}">
-                                                                    <span class="lnr lnr-magnifier"></span>
-                                                                </a>
-                                                            </li>
-                                                            <li class="wishlist">
-                                                                {{-- {{ route('wishlist.add', $dish->id) }} --}}
-                                                                <a href="#" data-tippy="Yêu thích">
-                                                                    <span class="lnr lnr-heart"></span>
-                                                                </a>
-                                                            </li>
-                                                            <li class="compare">
-                                                                {{-- {{ route('compare.add', $dish->id) }} --}}
-                                                                <a href="#" data-tippy="So sánh">
-                                                                    <span class="lnr lnr-sync"></span>
-                                                                </a>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                                <figcaption class="product_content">
-                                                    <h4 class="product_name">
-                                                        <a
-                                                            href="{{ route('dish.details', $dish->id) }}">{{ $dish->name }}</a>
-                                                    </h4>
-                                                    <p><a
-                                                            href="#">{{ $dish->subCategory->name_sub ?? 'Danh mục' }}</a>
-                                                    </p>
-                                                    <div class="price_box">
-                                                        <span class="current_price">${{ $dish->discountedPrice() }}</span>
-                                                        @if ($dish->isDiscounted())
-                                                            <span class="old_price">${{ $dish->price }}</span>
-                                                        @endif
-                                                    </div>
-                                                </figcaption>
-                                            </figure>
-                                        </article>
+                                    @foreach ($dishes->filter(fn($dish) => $dish->is_new || $dish->isDiscounted())->chunk(2) as $pair)
+                                        <div class="product_item">
+                                            @foreach ($pair as $dish)
+                                                <article class="single_product">
+                                                    <figure>
+                                                        <div class="product_thumb">
+                                                            <a class="primary_img"
+                                                                href="{{ route('dish.details', $dish->id) }}">
+                                                                <img src="{{ asset('storage/' . ($dish->images->first()->image_path ?? 'client/assets/img/no-image.jpg')) }}"
+                                                                    alt="{{ $dish->name }}" class="rounded primary"
+                                                                    width="212" height="212">
+                                                            </a>
+                                                            <a class="secondary_img"
+                                                                href="{{ route('dish.details', $dish->id) }}">
+                                                                <img src="{{ asset('storage/' . ($dish->images->skip(1)->first()->image_path ?? ($dish->images->first()->image_path ?? 'client/assets/img/no-image.jpg'))) }}"
+                                                                    alt="{{ $dish->name }}" class="rounded secondary"
+                                                                    width="212" height="212">
+                                                            </a>
+                                                            <div class="label_product">
+                                                                @if ($dish->isDiscounted())
+                                                                    <span class="label_sale">Sale</span>
+                                                                @endif
+                                                                @if ($dish->is_new)
+                                                                    <span class="label_new">New</span>
+                                                                @endif
+                                                            </div>
+                                                            <div class="action_links">
+                                                                <ul>
+                                                                    <li class="add_to_cart">
+                                                                        <a href="#" title="Thêm vào giỏ">
+                                                                            <i class="lnr lnr-cart"></i>
+                                                                        </a>
+                                                                    </li>
+                                                                    <li class="quick_button">
+                                                                        <a href="#" data-bs-toggle="modal"
+                                                                            data-bs-target="#modal_box_{{ $dish->id }}">
+                                                                            <i class="lnr lnr-magnifier"></i>
+                                                                        </a>
+                                                                    </li>
+                                                                    <li class="wishlist">
+                                                                        <a href="#" title="Yêu thích">
+                                                                            <i class="lnr lnr-heart"></i>
+                                                                        </a>
+                                                                    </li>
+                                                                    <li class="compare">
+                                                                        <a href="#" title="So sánh">
+                                                                            <i class="lnr lnr-sync"></i>
+                                                                        </a>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                        <figcaption class="product_content">
+                                                            <h4 class="product_name">
+                                                                <a
+                                                                    href="{{ route('dish.details', $dish->id) }}">{{ $dish->name }}</a>
+                                                            </h4>
+                                                            <p><a
+                                                                    href="#">{{ $dish->subCategory->name_sub ?? 'Danh mục' }}</a>
+                                                            </p>
+                                                            <div class="price_box">
+                                                                <span class="current_price">
+                                                                    {{ number_format($dish->discountedPrice(), 0, ',', '.') }}đ
+                                                                </span>
+                                                                @if ($dish->isDiscounted())
+                                                                    <span class="old_price">
+                                                                        {{ number_format($dish->price, 0, ',', '.') }}đ
+                                                                    </span>
+                                                                @endif
+                                                            </div>                                                            
+                                                        </figcaption>
+                                                    </figure>
+                                                </article>
+                                            @endforeach
+                                        </div>
                                     @endforeach
                                 </div>
-                            </div>                           
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1043,39 +1052,25 @@
         </div>
     </div>
     <style>
+        .product_item {
+            display: flex;
+            flex-direction: column;
+            gap: 60px;
+            /* Tăng khoảng cách giữa 2 hàng */
+        }
+
+        .product_column5 .owl-stage {
+            display: flex;
+            align-items: start;
+        }
+
         .product_thumb img {
             width: 212px;
             height: 212px;
             object-fit: cover;
             border-radius: 8px;
         }
+        
     </style>
     <!--brand area end-->
 @endsection
-@push('scripts')
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            // Lấy danh sách tất cả các tab
-            const tabLinks = document.querySelectorAll("#nav-tab a");
-
-            tabLinks.forEach(tab => {
-                tab.addEventListener("click", function(event) {
-                    event.preventDefault();
-                    const targetTab = this.getAttribute("href");
-
-                    // Ẩn tất cả các tab nội dung
-                    document.querySelectorAll(".tab-pane").forEach(tabContent => {
-                        tabContent.classList.remove("show", "active");
-                    });
-
-                    // Hiển thị tab được chọn
-                    document.querySelector(targetTab).classList.add("show", "active");
-
-                    // Đổi trạng thái active của tab
-                    tabLinks.forEach(link => link.classList.remove("active"));
-                    this.classList.add("active");
-                });
-            });
-        });
-    </script>
-@endpush

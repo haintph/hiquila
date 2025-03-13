@@ -23,7 +23,7 @@ class DishController extends Controller
         $dishes = Dish::with(['subCategory', 'images', 'activePromotion'])
             ->where('is_available', 1)
             ->latest('updated_at')
-            ->take(8) // Lấy 8 món mới nhất
+            ->take(10) // Lấy 8 món mới nhất
             ->get();
 
         return view('client.index', compact('dishes'));
