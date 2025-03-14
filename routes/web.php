@@ -28,10 +28,8 @@ use App\Http\Controllers\HomeController;
 */
 
 Route::get('/', [HomeController::class, 'index']);
-Route::get('menu', function () {
-    return view('client.menu');
-})->name('menu');
-
+//menu
+Route::get('/menu', [DishController::class, 'clientList'])->name('menu');
 
 // Route cho đăng nhập
 Route::get('auth', [AuthController::class, 'showLoginForm'])->name('auth');
@@ -95,7 +93,7 @@ Route::middleware(['auth', 'role:1'])->group(function () { // Role '1' là admin
     Route::delete('sub_category_destroy/{id}', [SubCategoryController::class, 'destroy'])->name('sub_category_destroy');
     Route::get('sub_category_detail/{id}', [SubCategoryController::class, 'detail'])->name('sub_category_detail');
 
-    //Quản lý món ăn (dishes)**
+    //Quản lý món ăn (dishes)
     Route::get('dish_list', [DishController::class, 'list'])->name('dish_list');
     Route::get('dish_create', [DishController::class, 'create'])->name('dish_create');
     Route::post('dish_store', [DishController::class, 'store'])->name('dish_store');

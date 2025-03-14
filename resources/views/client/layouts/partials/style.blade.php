@@ -30,3 +30,15 @@
 
 <!--modernizr min js here-->
 <script src="/client/assets/js/vendor/modernizr-3.7.1.min.js"></script>
+<style>
+    .product_thumb img {
+        width: 100%;
+        /* Ảnh chiếm hết khung */
+        height: 200px;
+        /* Độ cao cố định */
+        object-fit: cover;
+        /* Cắt ảnh cho vừa khung mà không méo */
+        border-radius: 10px;
+        /* Bo góc nhẹ để đẹp hơn */
+    }
+</style>

@@ -20,4 +20,8 @@ class SubCategory extends Model
     {
         return $this->belongsTo(Category::class, 'parent_id');
     }
+    public function dishes()
+    {
+        return $this->hasMany(Dish::class, 'sub_category_id');
+    }
 }

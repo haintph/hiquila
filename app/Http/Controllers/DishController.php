@@ -206,4 +206,9 @@ class DishController extends Controller
 
         return response()->json(['success' => false]);
     }
+    public function clientList()
+    {
+        $dishes = Dish::where('is_available', 1)->latest()->paginate(10); // 10 sản phẩm mỗi trang
+        return view('client.list.menu', compact('dishes'));
+    }
 }
