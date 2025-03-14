@@ -23,7 +23,7 @@ class DishController extends Controller
         $dishes = Dish::with(['subCategory', 'images', 'activePromotion'])
             ->where('is_available', 1)
             ->latest('updated_at')
-            ->take(10) // Lấy 8 món mới nhất
+            ->take(15)
             ->get();
 
         return view('client.index', compact('dishes'));
@@ -61,6 +61,7 @@ class DishController extends Controller
             'name' => 'required|string|max:100',
             'sub_category_id' => 'required|exists:sub_categories,id',
             'price' => 'required|numeric|min:0',
+            'view' => 'nullable|integer|min:0',
             'stock' => 'required|integer|min:0',
             'is_available' => 'required|boolean',
             'description' => 'required|string',
@@ -73,6 +74,7 @@ class DishController extends Controller
             'name' => $validatedData['name'],
             'sub_category_id' => $validatedData['sub_category_id'],
             'price' => $validatedData['price'],
+            'view' => $validatedData['view'],
             'stock' => $validatedData['stock'],
             'is_available' => $validatedData['is_available'],
             'description' => $validatedData['description'],
@@ -117,6 +119,7 @@ class DishController extends Controller
             'name' => 'required|string|max:100',
             'sub_category_id' => 'required|exists:sub_categories,id',
             'price' => 'required|numeric|min:0',
+            'view' => 'nullable|integer|min:0',
             'stock' => 'required|integer|min:0',
             'is_available' => 'required|boolean',
             'description' => 'required|string',
@@ -163,8 +166,13 @@ class DishController extends Controller
     public function detail($id)
     {
         $dish = Dish::findOrFail($id);
+
+        // Tăng số lượt xem
+        $dish->increment('view');
+
         return view('admin.dishes.detail', compact('dish'));
     }
+
 
     public function destroy($id)
     {
@@ -179,15 +187,7 @@ class DishController extends Controller
 
         return redirect()->route('dish_list')->with('success', 'Đã xóa món ăn thành công!');
     }
-    // public function show($id)
-    // {
-    //     $dish = Dish::with('variants')->findOrFail($id);
 
-    //     // Lấy danh sách ảnh từ bảng dish_images
-    //     $albumImages = DishImage::where('dish_id', $dish->id)->get();
-
-    //     return view('admin.dishes.detail', compact('dish', 'albumImages'));
-    // }
 
     public function showAdmin($id)
     {
@@ -243,4 +243,19 @@ class DishController extends Controller
 
         return response()->json(['success' => false]);
     }
+
+    public function increaseView($id)
+    {
+        $dish = Dish::findOrFail($id);
+
+        // Kiểm tra nếu khách đã xem chưa (dùng session)
+        $sessionKey = 'dish_viewed_' . $id;
+        if (!session()->has($sessionKey)) {
+            $dish->increment('view'); // Tăng số lượt xem
+            session()->put($sessionKey, true); // Lưu session
+        }
+
+        return response()->json(['views' => $dish->view]);
+    }
+
 }

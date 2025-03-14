@@ -94,6 +94,16 @@
                                         </div>
                                     </div>
 
+                                    <!-- Lượt xem -->
+                                    <div class="col-lg-6">
+                                        <div class="mb-3">
+                                            <label for="view" class="form-label">Lượt xem</label>
+                                            <input type="number" name="view" class="form-control"
+                                                value="{{ $dish->view }}" required min="0">
+                                        </div>
+                                    </div>
+
+
                                     <!-- Số lượng tồn kho -->
                                     <div class="col-lg-6">
                                         <div class="mb-3">
@@ -109,7 +119,8 @@
                                         <select class="form-control" name="is_available">
                                             <option value="1" {{ $dish->is_available == 1 ? 'selected' : '' }}>Còn hàng
                                             </option>
-                                            <option value="0" {{ $dish->is_available == 0 ? 'selected' : '' }}>Hết hàng
+                                            <option value="0" {{ $dish->is_available == 0 ? 'selected' : '' }}>Hết
+                                                hàng
                                             </option>
                                         </select>
                                     </div>

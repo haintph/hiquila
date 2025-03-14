@@ -24,7 +24,8 @@ class Dish extends Model
         'sub_category_id',
         'image',
         'is_available',
-        'is_new'
+        'is_new',
+        'view'
     ];
 
     /**
@@ -34,10 +35,11 @@ class Dish extends Model
     // {
     //     return $this->belongsTo(SubCategory::class, 'sub_category_id');
     // }
-    public function subCategory() {
+    public function subCategory()
+    {
         return $this->belongsTo(SubCategory::class, 'sub_category_id', 'id');
     }
-    
+
 
     /**
      * Mối quan hệ với biến thể món ăn.
@@ -61,8 +63,8 @@ class Dish extends Model
     public function activePromotion(): HasOne
     {
         return $this->hasOne(PromotionDish::class, 'dish_id')
-                    ->where('is_expired', false)
-                    ->latest('created_at'); // Lấy khuyến mãi mới nhất
+            ->where('is_expired', false)
+            ->latest('created_at'); // Lấy khuyến mãi mới nhất
     }
 
     /**
@@ -72,6 +74,12 @@ class Dish extends Model
     {
         return $this->hasMany(PromotionDish::class, 'dish_id');
     }
+
+    public function promotion()
+    {
+        return $this->hasOne(PromotionDish::class, 'dish_id');
+    }
+
 
     /**
      * Kiểm tra món có giảm giá không.

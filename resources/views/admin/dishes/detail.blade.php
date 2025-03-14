@@ -31,6 +31,12 @@
                                         value="{{ number_format($dish->price, 0, ',', '.') }} VND" readonly>
                                 </div>
 
+                                <div class="col-lg-6">
+                                    <label for="views" class="form-label">Lượt xem</label>
+                                    <input type="text" class="form-control"
+                                        value="{{ $dish->view ?? 0 }} lượt" readonly>
+                                </div>
+
                                 <!-- Trạng thái -->
                                 <div class="col-lg-6">
                                     <label for="status" class="form-label">Trạng thái</label>
@@ -94,10 +100,27 @@
     </div>
 
     <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            let dishId = {{ $dish->id }};
+    
+            fetch(`/dish/${dishId}/view`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log("Lượt xem:", data.views);
+            });
+        });
+    
         function editVariant(variant) {
             alert("Bạn muốn chỉnh sửa biến thể: " + variant.name);
             // Thêm logic mở modal hoặc điều hướng đến trang sửa biến thể
         }
     </script>
+    
 
 @endsection

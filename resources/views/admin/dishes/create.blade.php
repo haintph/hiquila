@@ -35,6 +35,11 @@
                                         class="form-control rounded-3 shadow-sm" placeholder="Nhập giá tiền">
                                 </div>
 
+                                <div class="col-md-6">
+                                    <label class="form-label fw-bold">Lượt xem</label>
+                                    <input type="number" name="view" class="form-control rounded-3 shadow-sm" placeholder="Nhập số lượt xem" value="0">
+                                </div>
+
                                 <!-- Số lượng -->
                                 <div class="col-md-6">
                                     <label class="form-label fw-bold">Số lượng</label>

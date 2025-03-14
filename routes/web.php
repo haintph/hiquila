@@ -107,6 +107,8 @@ Route::middleware(['auth', 'role:1'])->group(function () { // Role '1' là admin
     Route::get('dish_edit/{id}', [DishController::class, 'edit'])->name('dish_edit');
     Route::put('dish_update/{id}', [DishController::class, 'update'])->name('dish_update');
     Route::delete('dish_destroy/{id}', [DishController::class, 'destroy'])->name('dish_destroy');
+    Route::post('/dish/{id}/view', [DishController::class, 'increaseView'])->name('dish.view');
+
 
     //vảiant
     Route::get('/dish_detail/show/{id}', [DishController::class, 'showAdmin'])->name('dish_detail');

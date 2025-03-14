@@ -29,6 +29,7 @@
                                     <th style="width: 30%">Dish</th>
                                     <th class="text-center" style="width: 20%">Price</th>
                                     <th style="width: 15%">Sub Category</th>
+                                    <th class="text-center" style="width: 10%">Lượt xem</th>
                                     <th class="text-center" style="width: 10%">Stock</th>
                                     <th class="text-center" style="width: 10%">Status</th>
                                     <th class="text-center" style="width: 10%">Action</th>
@@ -56,6 +57,7 @@
                                             @endif
                                         </td>
                                         <td>{{ $dish->subCategory->name_sub ?? 'N/A' }}</td>
+                                        <td class="text-center">{{ $dish->view ?? 0 }}</td> 
                                         <td class="text-center">
                                             <span class="badge {{ $dish->stock == 0 ? 'bg-warning' : 'bg-primary' }}">
                                                 {{ $dish->stock == 0 ? 'Hết hàng' : $dish->stock }}
