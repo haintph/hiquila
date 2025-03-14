@@ -334,5 +334,4 @@
             </div>
         </div>
     </div>
-   
 @endsection

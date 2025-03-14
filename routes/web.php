@@ -14,6 +14,8 @@ use App\Http\Controllers\DishController;
 use App\Http\Controllers\DishImageController;
 use App\Http\Controllers\DishVariantController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PromotionController;
+use App\Http\Controllers\PromotionDishController;
 
 
 /*
@@ -27,7 +29,9 @@ use App\Http\Controllers\HomeController;
 |
 */
 
-Route::get('/', [HomeController::class, 'index']);
+
+Route::get('/', [DishController::class, 'index'])->name('home');
+Route::get('/dish/{id}', [DishController::class, 'showClient'])->name('dish.details');
 //menu
 Route::get('/menu', [DishController::class, 'clientList'])->name('menu');
 
@@ -100,7 +104,7 @@ Route::middleware(['auth', 'role:1'])->group(function () { // Role '1' là admin
     Route::get('dish_edit/{id}', [DishController::class, 'edit'])->name('dish_edit');
     Route::put('dish_update/{id}', [DishController::class, 'update'])->name('dish_update');
     Route::delete('dish_destroy/{id}', [DishController::class, 'destroy'])->name('dish_destroy');
-    Route::get('/dish_detail/show/{id}', [DishController::class, 'show'])->name('dish_detail');
+    Route::get('/dish_detail/show/{id}', [DishController::class, 'detail'])->name('dish_detail');
     //vảiant
     Route::get('variants', [DishVariantController::class, 'list'])->name('variant_list');
     Route::get('/variants/create/{dish_id}', [DishVariantController::class, 'create'])->name('variants.create');
@@ -117,6 +121,24 @@ Route::middleware(['auth', 'role:1'])->group(function () { // Role '1' là admin
 
     //slider
     Route::resource('sliders', SliderController::class);
+
+    //Quản lý chương trình khuyến mãi (promotions)
+    Route::get('promotion_list', [PromotionController::class, 'list'])->name('promotion_list');
+    Route::get('promotion_create', [PromotionController::class, 'create'])->name('promotion_create');
+    Route::post('promotion_store', [PromotionController::class, 'store'])->name('promotion_store');
+    Route::get('promotion_edit/{id}', [PromotionController::class, 'edit'])->name('promotion_edit');
+    Route::put('promotion_update/{id}', [PromotionController::class, 'update'])->name('promotion_update');
+    Route::delete('promotion_destroy/{id}', [PromotionController::class, 'destroy'])->name('promotion_destroy');
+    Route::get('promotion_detail/{id}', [PromotionController::class, 'detail'])->name('promotion_detail');
+
+    // Quản lý món ăn trong chương trình khuyến mãi (promotion_dishes)
+    Route::get('promotion_dish_list', [PromotionDishController::class, 'list'])->name('promotion_dish_list');
+    Route::get('promotion_dish_create', [PromotionDishController::class, 'create'])->name('promotion_dish_create');
+    Route::post('promotion_dish_store', [PromotionDishController::class, 'store'])->name('promotion_dish_store');
+    Route::get('promotion_dish_edit/{id}', [PromotionDishController::class, 'edit'])->name('promotion_dish_edit');
+    Route::put('promotion_dish_update/{id}', [PromotionDishController::class, 'update'])->name('promotion_dish_update');
+    Route::delete('promotion_dish_destroy/{id}', [PromotionDishController::class, 'destroy'])->name('promotion_dish_destroy');
+    Route::get('promotion_dish_detail/{id}', [PromotionController::class, 'detail'])->name('promotion_dish_detail');
 });
 
 //Waiter role (chỉ nhân viên mới có thể truy cập)
@@ -126,3 +148,6 @@ Route::middleware(['auth', 'role:4'])->get('waiter', function () {
 
 //AI
 Route::post('/chat-ai', [AIController::class, 'chat']);
+
+//SEARCH
+Route::get('/search-dish', [DishController::class, 'search'])->name('search_dish');

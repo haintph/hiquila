@@ -7,7 +7,7 @@
 
             <div class="row">
                 <div class="col-xl-3 col-lg-4">
-                    <h3>Create Category</h3>                  
+                    <h3>Create Category</h3>
                 </div>
 
                 <div class="col-xl-9 col-lg-8 ">
@@ -23,37 +23,45 @@
                                     <div class="col-lg-6">
                                         <div class="mb-3">
                                             <label for="category-title" class="form-label">Tên danh mục</label>
-                                            <input type="text" name="name" class="form-control"
-                                                placeholder="Enter Title">
+                                            <input type="text" name="name" class="form-control" placeholder="Enter Title" value="{{ old('name') }}">
+                                            @if ($errors->has('name'))
+                                                <span class="text-danger">{{ $errors->first('name') }}</span>
+                                            @endif
                                         </div>
                                     </div>
-
+                                    
                                     <div class="col-lg-6">
-
                                         <label for="crater" class="form-label">Trạng thái</label>
                                         <select class="form-control" name="is_active">
                                             <option value="">Chọn trạng thái</option>
-                                            <option value="1">Hoạt động</option>
-                                            <option value="0">Ngừng hoạt động</option>
+                                            <option value="1" {{ old('is_active') == '1' ? 'selected' : '' }}>Hoạt động</option>
+                                            <option value="0" {{ old('is_active') == '0' ? 'selected' : '' }}>Ngừng hoạt động</option>
                                         </select>
-
+                                        @if ($errors->has('is_active'))
+                                            <span class="text-danger">{{ $errors->first('is_active') }}</span>
+                                        @endif
                                     </div>
+                                    
                                     <div class="col-lg-6">
-
                                         <label class="form-label">Image</label><br>
-                                        <input type="file" name="img_category" id="img_category"
-                                            onchange="previewImage(event)">
+                                        <input type="file" name="img_category" id="img_category" onchange="previewImage(event)">
                                         <br>
-                                        <img id="imagePreview" src="" alt="Image Preview"
-                                            style="max-width: 300px; max-height: 50px; display: none;"><br>
-
+                                        <img id="imagePreview" src="" alt="Image Preview" style="max-width: 300px; max-height: 50px; display: none;"><br>
+                                        @if ($errors->has('img_category'))
+                                            <span class="text-danger">{{ $errors->first('img_category') }}</span>
+                                        @endif
                                     </div>
+                                    
                                     <div class="col-lg-12">
                                         <div class="mb-0">
                                             <label for="description" class="form-label">Miêu tả</label>
-                                            <textarea class="form-control bg-light-subtle" name="description" rows="7" placeholder="Type description"></textarea>
+                                            <textarea class="form-control bg-light-subtle" name="description" rows="7" placeholder="Type description">{{ old('description') }}</textarea>
+                                            @if ($errors->has('description'))
+                                                <span class="text-danger">{{ $errors->first('description') }}</span>
+                                            @endif
                                         </div>
                                     </div>
+                                    
                                 </div>
                             </div>
                         </div>

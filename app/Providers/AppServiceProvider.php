@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 use App\Models\Category;
+use App\Models\SubCategory;
 use Illuminate\Support\Facades\DB;
 
 class AppServiceProvider extends ServiceProvider
@@ -25,14 +26,24 @@ class AppServiceProvider extends ServiceProvider
     {
         Paginator::useBootstrap();
 
-        // Kiểm tra xem có kết nối được DB không trước khi truy vấn
+        // Kiểm tra kết nối DB trước khi lấy dữ liệu
+        if ($this->checkDatabaseConnection()) {
+            $categories = Category::with('subCategories')->get();
+            $subCategories = SubCategory::all();
+
+            view()->share([
+                'categories' => $categories,
+                'subCategories' => $subCategories,
+            ]);
+        }
+    }
+
+    private function checkDatabaseConnection(): bool
+    {
         try {
-            if (DB::connection()->getPdo() && Schema::hasTable('categories')) {
-                $categories = Category::with('subCategories')->get();
-                view()->share('categories', $categories);
-            }
+            return DB::connection()->getPdo() && Schema::hasTable('categories') && Schema::hasTable('sub_categories');
         } catch (\Exception $e) {
-            // Nếu lỗi, bỏ qua việc lấy dữ liệu
+            return false;
         }
     }
 }
