@@ -267,9 +267,21 @@ class DishController extends Controller
 
         return response()->json(['views' => $dish->view]);
     }
-    public function clientList()
+    public function clientMenu(Request $request)
     {
-        $dishes = Dish::where('is_available', 1)->latest()->paginate(10); // 10 sản phẩm mỗi trang
+        $dishes = Dish::where('is_available', 1);
+
+        // Lọc theo giá nếu có giá trị min_price và max_price
+        if ($request->has('min_price') && $request->has('max_price')) {
+            $dishes->whereBetween('price', [
+                $request->min_price,
+                $request->max_price
+            ]);
+        }
+
+        $dishes = $dishes->latest()->paginate(10);
+
+        // Trả về view với các món ăn đã lọc
         return view('client.list.menu', compact('dishes'));
     }
 

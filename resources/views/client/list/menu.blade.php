@@ -60,9 +60,15 @@
                                         @endif
 
                                         <!-- Nhãn sản phẩm -->
+                                        <!-- Nhãn sản phẩm -->
                                         <div class="label_product">
-                                            <span class="label_sale">Sale</span>
-                                            <span class="label_new">New</span>
+                                            @if (optional($dish->promotion)->discount > 0)
+                                                <span class="label_sale">Sale</span>
+                                            @endif
+
+                                            @if (now()->diffInDays($dish->created_at) <= 7)
+                                                <span class="label_new">New</span>
+                                            @endif
                                         </div>
 
                                         <!-- Nút chức năng -->
@@ -107,8 +113,15 @@
                                             <a href="#">{{ $dish->subCategory->name_sub ?? 'Không xác định' }}</a>
                                         </p>
                                         <div class="price_box">
-                                            <span class="current_price">{{ number_format($dish->price, 2) }} VNĐ</span>
-                                            <span class="old_price">$362.00</span> <!-- Nếu có giá cũ thì lấy từ DB -->
+                                            @if (optional($dish->promotion)->discount > 0)
+                                                <span class="current_price">
+                                                    {{ number_format($dish->price - ($dish->price * optional($dish->promotion)->discount) / 100) }}
+                                                    VNĐ
+                                                </span>
+                                                <span class="old_price">{{ number_format($dish->price) }} VNĐ</span>
+                                            @else
+                                                <span class="current_price">{{ number_format($dish->price) }} VNĐ</span>
+                                            @endif
                                         </div>
                                     </div>
 
@@ -239,11 +252,14 @@
                             </div>
                             <div class="widget_list widget_filter">
                                 <h3>Filter by price</h3>
-                                <form action="#">
+                                <form method="GET" action="{{ route('menu') }}" id="priceFilterForm">
+                                    @csrf
                                     <div id="slider-range"></div>
-                                    <button type="submit">Filter</button>
-                                    <input type="text" name="text" id="amount" />
+                                    <div class="price-display" id="amount"></div>
 
+                                    <input type="hidden" name="min_price" id="minPrice">
+                                    <input type="hidden" name="max_price" id="maxPrice">
+                                    <button type="submit">Filter</button>
                                 </form>
                             </div>
                             <div class="widget_list widget_color">
@@ -334,4 +350,52 @@
             </div>
         </div>
     </div>
+    <script>
+        $(document).ready(function() {
+            // Tạo slider giá
+            $("#slider-range").slider({
+                range: true,
+                min: 0,
+                max: 1000000, // 100 triệu
+                values: [0, 1000000], // Giá trị ban đầu
+                slide: function(event, ui) {
+                    // Cập nhật giá trị hiển thị trong div
+                    var minPrice = ui.values[0].toLocaleString();
+                    var maxPrice = ui.values[1].toLocaleString();
+                    $("#amount").text("₫" + minPrice + " - ₫" + maxPrice); // Hiển thị giá trị tiền tệ
+                    $("#minPrice").val(ui.values[0]);
+                    $("#maxPrice").val(ui.values[1]);
+                }
+            });
+
+            // Hiển thị giá trị ban đầu
+            var minPrice = $("#slider-range").slider("values", 0).toLocaleString();
+            var maxPrice = $("#slider-range").slider("values", 1).toLocaleString();
+            $("#amount").text("₫" + minPrice + " - ₫" + maxPrice); // Cập nhật giá trị ban đầu
+        });
+    </script>
+    <style>
+        .price-display {
+            border: 1px solid #ddd;
+            background-color: #fff;
+            padding: 10px 15px;
+            font-size: 16px;
+            /* Giảm kích thước font để dễ nhìn hơn */
+            color: #f6931f;
+            font-weight: bold;
+            text-align: left;
+            /* Căn trái */
+            border-radius: 5px;
+            width: 100%;
+            /* Tùy chỉnh chiều rộng nếu cần */
+            max-width: 350px;
+            /* Tối đa chiều rộng */
+            margin: 0 auto;
+            /* Căn giữa */
+            white-space: nowrap;
+            /* Ngăn việc cắt text */
+            padding-left: 10px;
+            /* Thêm khoảng cách từ bên trái */
+        }
+    </style>
 @endsection

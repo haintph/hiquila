@@ -33,7 +33,7 @@ use App\Http\Controllers\PromotionDishController;
 Route::get('/', [DishController::class, 'index'])->name('home');
 Route::get('/dish/{id}', [DishController::class, 'showClient'])->name('dish.details');
 //menu
-Route::get('/menu', [DishController::class, 'clientList'])->name('menu');
+Route::get('/menu', [DishController::class, 'clientMenu'])->name('menu');
 
 // Route cho đăng nhập
 Route::get('auth', [AuthController::class, 'showLoginForm'])->name('auth');
